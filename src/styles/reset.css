@@ -2,6 +2,10 @@
   width: 100% !important;
 }
 
+.pagination .pagination__options {
+  display: none !important;
+}
+
 @font-face {
   font-family: 'Oswald-Regular';
   src:

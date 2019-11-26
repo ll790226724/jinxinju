@@ -3,12 +3,12 @@ module.exports = {
   component: '@byzanteam/vis-components/data-loader',
   position: [1540, 30],
   exports: {
-    results: '{ data }',
+    results: 'results',
   },
   props: {
     url: '/v1/components/80a9cb47-606d-48f1-952d-7b03d1c238fd/data?table=nice_enterprise',
     method: 'get',
-    $data: "{data: [['']]}",
+    $data: "[['']]",
     $style: {
       width: '342px',
       height: '53px',
@@ -16,7 +16,7 @@ module.exports = {
   },
   events: {
     'requestDone': {
-      actions: ["setState('communities', getComponent('multipe-select-component').results.data)"]
+      actions: ["setState('communities', getComponent('multipe-select-component').results)"]
     }
   },
   children: [
@@ -28,7 +28,7 @@ module.exports = {
         placeholder: "全部类型",
         labelKey: 'label',
         valueKey: 'value',
-        $options: 'data.map((result, index) => {return {label: result[0], value: result[0], color: craneStates.colorMap[index % 19]}})'
+        $options: 'results.map((result, index) => {return {label: result[0], value: result[0], color: craneStates.colorMap[index % 19]}})'
       },
       children: [
         {

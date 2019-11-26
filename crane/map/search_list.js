@@ -3,19 +3,19 @@ module.exports = {
   component: '@byzanteam/vis-components/data-loader',
   position: [40, 84],
   exports: {
-    response: '{ data }',
+    response: '{data, pageInfo: { total }}',
   },
   props: {
     $url: "`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%25${craneStates.searchValue}%25&industry=${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`",
     method: 'get',
-    $data: "{data: [['']]}",
+    $data: "{data: [['']], pageInfo: {total: 0}}",
   },
   children: [
     {
       id: 'search-list-container',
       component: 'div',
       props: {
-        'v-show': 'craneStates.searchValue && !craneStates.companyShow && results',
+        'v-show': 'craneStates.searchValue && !craneStates.companyShow && data',
         $style: {
           padding: '10px 0',
           backgroundColor: '#1f2440',
@@ -38,16 +38,16 @@ module.exports = {
           },
           children: [
             {
-              component: '@byzanteam/brick/brick-list',
+              component: '@byzanteam/vis-components/brick-list',
               props: {
                 class: 'search-list',
               },
               children: [
                 {
                   id: 'search-list-item',
-                  component: '@byzanteam/brick/brick-list-optional-item',
+                  component: '@byzanteam/vis-components/brick-list-optional-item',
                   vfor: {
-                    data: 'results',
+                    data: 'data',
                     exports: {item: 'item', index: 'index'}
                   },
                   props: {
@@ -119,7 +119,7 @@ module.exports = {
             },
             {
               id: 'search-paginator',
-              component: '@byzanteam/brick/pagination',
+              component: '@byzanteam/vis-components/pagination',
               events: {
                 'page-changed': {
                   params: ['{ currentPage, perPage }'],
@@ -127,11 +127,11 @@ module.exports = {
                 }
               },
               props: {
-                'v-if': 'totalCount > 20',
+                'v-if': 'total > 20',
                 $showTotalCount: 'false',
                 $showPerPage: 'false',
                 $showJumper: 'false',
-                $totalCount: 'totalCount',
+                $totalCount: 'total',
                 $style: {
                   height: '70px'
                 }

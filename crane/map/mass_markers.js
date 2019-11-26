@@ -7,7 +7,7 @@ module.exports = {
   },
   props: {
     url: '/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data',
-    method: 'post',
+    method: 'get',
     $data: "[{community: '', location: [0, 0]}]",
     $params: 'mapParams',
     $style: {

@@ -21,7 +21,7 @@ module.exports = {
       },
       props: {
         url: '/v1/components',
-        method: 'post',
+        method: 'get',
         $data: "[{community: '', 单位详细名称: ''}]",
         $params: {
           type: 'PAIR',

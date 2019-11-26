@@ -1,7 +1,7 @@
 module.exports = [
   {
     id: 'search-input',
-    component: '@byzanteam/brick/brick-input',
+    component: '@byzanteam/vis-components/brick-input',
     position: [40, 30],
     props: {
       placeholder: '请输入关键词',
@@ -24,7 +24,7 @@ module.exports = [
         children: [
           {
             id: 'search-input-prefix-icon',
-            component: '@byzanteam/brick/brick-icon',
+            component: '@byzanteam/vis-components/brick-icon',
             props: {
               name: 'search',
               color: 'rgba(255, 255, 255, 0.4)'
@@ -38,7 +38,7 @@ module.exports = [
         slot: 'tail',
         children: [
           {
-            component: '@byzanteam/brick/brick-tooltip',
+            component: '@byzanteam/vis-components/brick-tooltip',
             props: {
               'v-if': 'craneStates.searchValue',
               content: '清除',
@@ -47,7 +47,7 @@ module.exports = [
             children: [
               {
                 id: 'search-input-prefix-icon',
-                component: '@byzanteam/brick/brick-icon',
+                component: '@byzanteam/vis-components/brick-icon',
                 props: {
                   name: 'times-circle',
                   color: 'rgba(255, 255, 255, 0.4)'
