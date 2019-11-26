@@ -6,13 +6,14 @@ module.exports = {
     response: '{data: results, total: totalCount}',
   },
   props: {
-    url: '/v1/plt/nonaxis',
+    url: '/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data',
     method: 'post',
     $data: "{data: [{community: '', ['单位详细名称']: ''}], totalCount: 0}",
     $params: {
-      type: 'PAGINATOR',
-      sourceID: '40eaf98e-1d8c-4154-aaba-80e560517c1a',
-      $sqlBuilder: "searchSqlBuilder"
+      $name: 'craneStates.searchValue',
+      industry: '',
+      $page: 1,
+      $per_page: 20
     }
   },
   children: [

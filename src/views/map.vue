@@ -12,11 +12,11 @@
     </brick-input>
     <data-loader ref="map-component" v-slot="{ results: results }" url="/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data" method="post" :data="[{community: '', location: [0, 0]}]" :params="mapParams" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
       <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds())]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [113.586456,34.803382], zoom: 11, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
-        <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" :markers="results.map((result) => {return {...result, lnglat: result.location, style: markerValueMap[result.community]}})" :styles="markerStyles" :options="{opacity: 1}" />
+        <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" :markers="results.map((result) => {return {...result, lnglat: result.location, style: craneStates.markerValueMap[result.community]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
         <info-window ref="infowindowRef" />
       </base-map>
     </data-loader>
-    <data-loader ref="search-list-data" v-slot="{ response: {data: results, total: totalCount} }" url="/v1/plt/nonaxis" method="post" :data="{data: [{community: '', ['单位详细名称']: ''}], totalCount: 0}" :params="{type: 'PAGINATOR', sourceID: '40eaf98e-1d8c-4154-aaba-80e560517c1a', sqlBuilder: searchSqlBuilder}" :style="{position: 'absolute', top: '84px', left: '40px'}">
+    <data-loader ref="search-list-data" v-slot="{ response: {data: results, total: totalCount} }" url="/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data" method="post" :data="{data: [{community: '', ['单位详细名称']: ''}], totalCount: 0}" :params="{name: craneStates.searchValue, industry: '', page: 1, per_page: 20}" :style="{position: 'absolute', top: '84px', left: '40px'}">
       <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && results" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden'}">
         <div ref="search-list-container" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', padding: '10px 0', overflow: 'scroll'}">
           <brick-list class="search-list">
@@ -49,9 +49,9 @@
         </div>
       </data-loader>
     </div>
-    <data-loader ref="multipe-select-component" v-slot="{ results: results }" @requestDone="()=>[setState('communities', getComponent('multipe-select-component').results.data)]" url="/v1/components" method="post" :data="[{community: ''}]" :style="{width: '342px', height: '53px', position: 'absolute', top: '30px', left: '1540px'}" :params="selectParams">
-      <vis-multiple-select ref="select" v-model="craneStates.selectOptions" placeholder="全部区域" labelKey="label" valueKey="value" :options="results.map((result, index) => {return {label: result.community, value: result.community, color: colorMap[index % 19]}})">
-        <template ref="select-value-template" v-slot:value&#x3D;{option}>
+    <data-loader ref="multipe-select-component" v-slot="{ results: { data } }" @requestDone="()=>[setState('communities', getComponent('multipe-select-component').results.data)]" url="/v1/components/80a9cb47-606d-48f1-952d-7b03d1c238fd/data?table=nice_enterprise" method="get" :data="{data: [['']]}" :style="{width: '342px', height: '53px', position: 'absolute', top: '30px', left: '1540px'}">
+      <vis-multiple-select ref="select" v-model="craneStates.selectOptions" placeholder="全部类型" labelKey="label" valueKey="value" :options="data.map((result, index) => {return {label: result[0], value: result[0], color: craneStates.colorMap[index % 19]}})">
+        <template ref="select-value-template" v-slot:value="{option}">
           <div ref="select-value-container">
             <span ref="select-value-badge" :style="{width: '10px', height: '10px', borderRadius: '50%', backgroundColor: option.color, marginRight: '8px', display: 'inline-block'}" />
             <span ref="select-value-text">
@@ -59,7 +59,7 @@
             </span>
           </div>
         </template>
-        <template ref="select-item-template" v-slot:{option}>
+        <template ref="select-item-template" v-slot="{option}">
           <div ref="select-item-container">
             <span ref="select-item-badge" :style="{width: '10px', height: '10px', borderRadius: '50%', backgroundColor: option.color, marginRight: '8px', display: 'inline-block'}" />
             <span ref="select-item-text">
@@ -190,9 +190,9 @@ export const map = {
     initMapCommunities (value) {
       this.craneStates.mapCommunities = _.reduce(value, (acc, item, index) => {
         if(index === value.length -1) {
-          return `${acc}'${item.community}'`
+          return `${acc}'${item[0]}'`
         }
-        return `${acc}'${item.community}',`
+        return `${acc}'${item[0]}',`
       }, '')
     },
     markerMouseoverFunc (marker) {

@@ -44,8 +44,8 @@ module.exports = {
           id: 'markers',
           component: '@byzanteam/map-ui/mass-marker',
           props: {
-            $markers: "results.map((result) => {return {...result, lnglat: result.location, style: markerValueMap[result.community]}})",
-            $styles: 'markerStyles',
+            $markers: "results.map((result) => {return {...result, lnglat: result.location, style: craneStates.markerValueMap[result.community]}})",
+            $styles: 'craneStates.markerStyles',
             $options: "{opacity: 1}"
           },
           events: {

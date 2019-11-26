@@ -3,17 +3,16 @@ module.exports = {
   component: '@byzanteam/vis-components/data-loader',
   position: [1540, 30],
   exports: {
-    results: 'results',
+    results: '{ data }',
   },
   props: {
-    url: '/v1/components',
-    method: 'post',
-    $data: "[{community: ''}]",
+    url: '/v1/components/80a9cb47-606d-48f1-952d-7b03d1c238fd/data?table=nice_enterprise',
+    method: 'get',
+    $data: "{data: [['']]}",
     $style: {
       width: '342px',
       height: '53px',
     },
-    $params: 'selectParams'
   },
   events: {
     'requestDone': {
@@ -26,10 +25,10 @@ module.exports = {
       component: '@byzanteam/vis-components/vis-multiple-select',
       props: {
         'v-model': 'craneStates.selectOptions',
-        placeholder: "全部区域",
+        placeholder: "全部类型",
         labelKey: 'label',
         valueKey: 'value',
-        $options: 'results.map((result, index) => {return {label: result.community, value: result.community, color: colorMap[index % 19]}})'
+        $options: 'data.map((result, index) => {return {label: result[0], value: result[0], color: craneStates.colorMap[index % 19]}})'
       },
       children: [
         {
