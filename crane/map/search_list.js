@@ -3,18 +3,12 @@ module.exports = {
   component: '@byzanteam/vis-components/data-loader',
   position: [40, 84],
   exports: {
-    response: '{data: results, total: totalCount}',
+    response: '{ data }',
   },
   props: {
-    url: '/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data',
-    method: 'post',
-    $data: "{data: [{community: '', ['单位详细名称']: ''}], totalCount: 0}",
-    $params: {
-      $name: 'craneStates.searchValue',
-      industry: '',
-      $page: 1,
-      $per_page: 20
-    }
+    $url: "`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%25${craneStates.searchValue}%25&industry=${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`",
+    method: 'get',
+    $data: "{data: [['']]}",
   },
   children: [
     {
@@ -69,7 +63,7 @@ module.exports = {
                     {
                       id: 'search-list-item-name',
                       component: 'span',
-                      content: '{{item["单位详细名称"]}}'
+                      content: '{{item[0]}}'
                     },
                     {
                       id: 'search-list-item-description-template',
@@ -101,7 +95,7 @@ module.exports = {
                             },
                             {
                               component: 'div',
-                              content: '{{item.community}}',
+                              content: '{{item[1]}}',
                               props:{
                                 class: 'search-list-item-description-text',
                                 $style: {
