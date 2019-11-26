@@ -1,0 +1,13 @@
+version: '3.5'
+services:
+  web:
+    image: registry.cn-hangzhou.aliyuncs.com/byzanteam/dcpbp
+    ports:
+      - 00:80
+    environment:
+      - DOMAIN=dcgbp.lenovo.com.cn
+      - FRONT_PATH=crane-target
+      - BACK_PATH=back
+      - BACK_DOMAIN=geteway
+      - uri=uri
+    command: /bin/bash -c "envsubst < /ect/nginx/conf.d/nitrogen.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"

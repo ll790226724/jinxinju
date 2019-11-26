@@ -1,0 +1,22 @@
+server {
+  listen       80;
+  server_name  ${DOMAIN};
+
+  #charset koi8-r;
+  #access_log  /var/log/nginx/host.access.log  main;
+
+  location /${FRONT_PATH} {
+    root   /usr/share/nginx/html;
+    try_files $uri $uri/ /index.html =500;
+    index  index.html index.htm;
+  }
+
+  error_page   500 502 503 504  /50x.html;
+  location = /50x.html {
+    root   /usr/share/nginx/html;
+  }
+
+  location /${BACK_PATH}/ {
+    proxy_pass   http://${BACK_DOMAIN}:8080/;
+  }
+}

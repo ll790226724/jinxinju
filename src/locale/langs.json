@@ -1,0 +1,11 @@
+{
+  "zh_CN": {
+    "pagination": {
+      "total_count": "总计{total}条",
+      "perpage": "每页显示{perpage}条目",
+      "jump": "跳转",
+      "page": "页数"
+    }
+  },
+  "en_US": {}
+}
