@@ -4,12 +4,17 @@ module.exports = [
     component: '@byzanteam/brick/brick-input',
     position: [40, 30],
     props: {
-      'v-model': 'craneStates.searchValue',
       placeholder: '请输入关键词',
       $style: {
         width: '400px',
         height: '50px',
       },
+    },
+    events: {
+      'change': {
+        params: ['value'],
+        actions: ["setState('searchValue', value)"]
+      }
     },
     children: [
       {

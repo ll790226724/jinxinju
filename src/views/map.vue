@@ -1,6 +1,6 @@
 <template>
   <div class="map">
-    <brick-input ref="search-input" v-model="craneStates.searchValue" placeholder="请输入关键词" :style="{width: '400px', height: '50px', position: 'absolute', top: '30px', left: '40px'}">
+    <brick-input ref="search-input" @change="(value)=>[setState('searchValue', value)]" placeholder="请输入关键词" :style="{width: '400px', height: '50px', position: 'absolute', top: '30px', left: '40px'}">
       <template ref="search-input-prefix-template" v-slot:head>
         <brick-icon ref="search-input-prefix-icon" name="search" color="rgba(255, 255, 255, 0.4)" />
       </template>
