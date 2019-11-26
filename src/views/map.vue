@@ -130,6 +130,18 @@ export const map = {
     }
   },
 
+  computed: {
+    mapParams () {
+      return {
+        table: 'nice_enterprise',
+        name: '四川',
+        industry: `'食品制造业','金属制品业'`,
+        page: this.craneStates.page,
+        'per_page': 20
+      }
+    }
+  },
+
   watch: {
     'craneStates.communities' (value) {
       value.forEach((result, index) => {

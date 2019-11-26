@@ -32,20 +32,16 @@ module.exports = {
       },
     },
     '@byzanteam/vis-components': {
-      version: '../vis-components',
+      version: '../../vis-components',
       order: 2,
       style: {
         type: 'normal',
         path: 'dist/index.css',
       },
     },
-    '@byzanteam/carbonium': {
-      version: 'latest',
-      order: 3,
-      style: {
-        type: 'normal',
-        path: 'dist/carbonium.css',
-      },
+    '@byzanteam/map-ui': {
+      version: '../../map-ui',
+      order: 4,
     },
   },
   // 页面
