@@ -2,8 +2,40 @@
   width: 100% !important;
 }
 
+.select__selection .list__item__tail {
+  color: #007afe !important;
+}
+
 .pagination .pagination__options {
   display: none !important;
+}
+
+.brick-input-control:hover .brick-input-control__addon--tail {
+  opacity: 1 !important;
+}
+.brick-input-control .brick-input-control__addon--tail {
+  opacity: 0 !important;
+}
+
+.tooltip.tooltip__bottom-center {
+  background-color: #313c56 !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  top: 70.928px !important;
+  left: 418.654px !important;
+}
+
+.tooltip.tooltip__bottom-center::before {
+  border-bottom-color: #313c56 !important;
+}
+
+.list__item--optional:hover .list__item__description {
+  color: #007afe;
+}
+
+.list__item__order-index {
+  flex: 0 0 10% !important;
+  text-align: center;
 }
 
 @font-face {

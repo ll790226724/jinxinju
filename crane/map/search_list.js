@@ -50,7 +50,7 @@ module.exports = {
                     exports: {item: 'item', index: 'index'}
                   },
                   props: {
-                    $item: 'item',
+                    $item: '{}',
                     $index: 'index + 1',
                   },
                   events: {
@@ -95,7 +95,8 @@ module.exports = {
                 $showJumper: 'false',
                 $totalCount: 'total',
                 $style: {
-                  height: '70px'
+                  height: '70px',
+                  justifyContent: 'center',
                 }
               }
             }

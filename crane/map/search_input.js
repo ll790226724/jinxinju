@@ -6,8 +6,9 @@ module.exports = [
     props: {
       placeholder: '请输入关键词',
       $style: {
-        width: '400px',
+        width: '384px',
         height: '50px',
+        backgroundColor: '#1f2440'
       },
     },
     events: {
@@ -38,7 +39,7 @@ module.exports = [
         slot: 'tail',
         children: [
           {
-            component: '@byzanteam/vis-components/brick-tooltip',
+            component: '@byzanteam/brick/brick-tooltip',
             props: {
               'v-if': 'craneStates.searchValue',
               content: '清除',

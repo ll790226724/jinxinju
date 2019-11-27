@@ -1,6 +1,6 @@
 <template>
   <div class="map">
-    <brick-input ref="search-input" @change="(value)=>[setState('searchValue', value)]" placeholder="请输入关键词" :style="{width: '400px', height: '50px', position: 'absolute', top: '30px', left: '40px'}">
+    <brick-input ref="search-input" @input="(value)=>[setState('searchValue', value)]" placeholder="请输入关键词" :style="{width: '384px', height: '50px', backgroundColor: '#1f2440', position: 'absolute', top: '30px', left: '40px'}">
       <template ref="search-input-prefix-template" v-slot:head>
         <brick-icon ref="search-input-prefix-icon" name="search" color="rgba(255, 255, 255, 0.4)" />
       </template>
@@ -20,7 +20,7 @@
       <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && data" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden'}">
         <div ref="search-list-container" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', overflow: 'scroll'}">
           <brick-list class="search-list">
-            <brick-list-optional-item ref="search-list-item" v-for="(item, index) in data" :key="index" @click="()=>[setState('company', item), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="item" :index="index + 1">
+            <brick-list-optional-item ref="search-list-item" v-for="(item, index) in data" :key="index" @click="()=>[setState('company', item), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="{}" :index="index + 1">
               <span ref="search-list-item-name">
                 {{item[0]}}
               </span>
@@ -31,7 +31,7 @@
               </template>
             </brick-list-optional-item>
           </brick-list>
-          <pagination ref="search-paginator" @page-changed="({ currentPage, perPage })=>[setState('page', currentPage)]" v-if="total > 20" :showTotalCount="false" :showPerPage="false" :showJumper="false" :totalCount="total" :style="{height: '70px'}" />
+          <pagination ref="search-paginator" @page-changed="({ currentPage, perPage })=>[setState('page', currentPage)]" v-if="total > 20" :showTotalCount="false" :showPerPage="false" :showJumper="false" :totalCount="total" :style="{height: '70px', justifyContent: 'center',}" />
         </div>
       </div>
     </data-loader>
@@ -74,13 +74,15 @@ import BuiltInMixin from '../mixins/built_in'
 import {
   BrickInput,
   BrickIcon,
-  BrickTooltip,
   DataLoader,
   BrickList,
   BrickListOptionalItem,
   Pagination,
   VisMultipleSelect,
 } from '@byzanteam/vis-components'
+import {
+  BrickTooltip,
+} from '@byzanteam/brick'
 import {
   BaseMap,
   MassMarker,
@@ -93,12 +95,12 @@ export const map = {
   components: {
     BrickInput,
     BrickIcon,
-    BrickTooltip,
     DataLoader,
     BrickList,
     BrickListOptionalItem,
     Pagination,
     VisMultipleSelect,
+    BrickTooltip,
     BaseMap,
     MassMarker,
     InfoWindow,
