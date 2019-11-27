@@ -38,6 +38,23 @@
   text-align: center;
 }
 
+.amap-info-contentContainer .amap-info-content {
+  background-color: #1f2440;
+  padding: 6px 8px;
+  color: #ffffff;
+  font-size: 14px;
+  border-radius: 4px;
+  box-shadow: 0 .1rem .1rem 0 transparentize(#000000, .86);
+}
+
+.amap-info-contentContainer .amap-info-close {
+  display: none;
+}
+
+.amap-info-contentContainer .amap-info-sharp {
+  border-top: 8px solid #1f2440;
+}
+
 @font-face {
   font-family: 'Oswald-Regular';
   src:

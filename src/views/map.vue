@@ -184,8 +184,8 @@ export const map = {
       }, '')
     },
     markerMouseoverFunc (marker) {
-      const content = `<div>${marker.data['单位详细名称']}</div>`
-      const location = marker.data.location
+      const content = `<div>${marker.data.name}</div>`
+      const location = marker.data.lnglat
       this.$refs.infowindowRef.createInfoWindow(content, location)
     },
     markerMouseoutFunc () {
