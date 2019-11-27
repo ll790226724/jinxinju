@@ -83,6 +83,23 @@ module.exports = {
         '#c08185'
       ]
     },
+    {
+      id: 'tableKeyMap',
+      value: {
+        'companyname': '公司名字',
+        'industry': '所属行业',
+        'corporateterritory': '企业属地',
+        'unifiedsocialcreditcode': '统一社会信用代码',
+        'businessscope': '经营范围',
+        'mainproducts': '主要产品',
+        'legalrepresentative': '法人代表',
+        'contactnumber': '联系电话',
+        'eiaapprovalnumber': '环评批复（备案）',
+        'mainbusinessincome': '上一年度主营收入',
+        'inboundtax': '上一年度入库税金',
+        'productionaddress': '生产地址'
+      }
+    }
   ],
   components: [
     ...mapPartial,

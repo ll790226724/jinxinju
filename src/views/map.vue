@@ -11,7 +11,7 @@
       </template>
     </brick-input>
     <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise${craneStates.mapCommunities}&minLng=${this.craneStates.mapBounds.southwest.lng}&maxLng=${this.craneStates.mapBounds.northeast.lng}&minLat=${this.craneStates.mapBounds.southwest.lat}&maxLat=${this.craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
-      <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds())]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [103.89682,30.793154], zoom: 11, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
+      <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds())]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [103.89682,30.793154], zoom: 17, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
         <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" v-if="results" :markers="results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
         <info-window ref="infowindowRef" />
       </base-map>
@@ -36,14 +36,26 @@
       </div>
     </data-loader>
     <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: 'rgb(26, 29, 57)'}">
-      <data-loader ref="company-data" v-slot="{ results: detail }" :style="{position: 'relative', padding: '35px 16px 24px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', backgroundPosition: '100% 100%'}">
-        <div ref="company-name-container" v-if="detail" :style="{display: 'flex', alignItems: 'center'}">
-          <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/jingxinju/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
-          <img ref="arrow-icon" @click="()=>[setState('companyShow', false)]" src="/jingxinju/images/Icon-Back.svg" :style="{width: '16px', cursor: 'pointer'}" v-else />
-          <span ref="arrow-icon-text" :style="{color: '#fff', fontSize: '18px', fontWeight: '600', marginLeft: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}">
-            xxx公司
-          </span>
+      <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%${craneStates.company.name}%`)" method="get" :data="{data: [[]]}">
+        <div v-if="response" :style="{position: 'relative', padding: '35px 16px 24px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', backgroundPosition: '100% 100%'}">
+          <div ref="company-name-container" v-if="response" :style="{display: 'flex', alignItems: 'center'}">
+            <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/jingxinju/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
+            <img ref="arrow-icon" @click="()=>[setState('companyShow', false)]" src="/jingxinju/images/Icon-Back.svg" :style="{width: '16px', cursor: 'pointer'}" v-else />
+            <span ref="arrow-icon-text" :style="{color: '#fff', fontSize: '18px', fontWeight: '600', marginLeft: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}">
+              {{ response.data[0][0] }}
+            </span>
+          </div>
         </div>
+        <table ref="details-table" v-if="response">
+          <tr ref="industry-tr" v-for="(item, key) in response.schema" :key="key" v-if="craneStates.tableKeyMap[item.field]" :style="{borderBottom: '1px  solid  rgba(255, 255, 255, .03)'}">
+            <td ref="industry-th" :style="{width: '140px', verticalAlign: 'middle', padding: '10px 8px ', borderRight: '1px, solid, rgba(255, 255, 255, .03)', color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400, lineHeight: '20px', textAlign: 'left', fontSize: '14px'}">
+              {{craneStates.tableKeyMap[item.field]}}
+            </td>
+            <td ref="details-dependency-td" :style="{width: '260px', verticalAlign: 'middle', padding: '10px 8px ', color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400, lineHeight: '20px', textAlign: 'left', fontSize: '14px'}">
+              {{ response.data[0][key] }}
+            </td>
+          </tr>
+        </table>
       </data-loader>
     </div>
     <data-loader ref="multipe-select-component" v-slot="{ results: results }" @requestDone="()=>[setState('communities', getComponent('multipe-select-component').results)]" url="/v1/components/80a9cb47-606d-48f1-952d-7b03d1c238fd/data?table=nice_enterprise" method="get" :data="[['']]" :style="{width: '342px', height: '53px', position: 'absolute', top: '30px', left: '1540px'}">
@@ -126,6 +138,7 @@ export const map = {
         markerStyles: [],
         mapCommunities: '',
         colorMap: ['#007afe', '#dece84', '#8f919f', '#dc5f5f', '#f7b267', '#4fa8f1', '#2ec4b6', '#bed8d4', '#627592', '#5fd6dc', '#7d5fdc', '#7dcfef', '#2e81c4', '#979eda', '#4b4b4b', '#dc5f9a', '#7dcfef', '#f76767', '#c08185'],
+        tableKeyMap: {companyname: '公司名字', industry: '所属行业', corporateterritory: '企业属地', unifiedsocialcreditcode: '统一社会信用代码', businessscope: '经营范围', mainproducts: '主要产品', legalrepresentative: '法人代表', contactnumber: '联系电话', eiaapprovalnumber: '环评批复（备案）', mainbusinessincome: '上一年度主营收入', inboundtax: '上一年度入库税金', productionaddress: '生产地址'},
       },
     }
   },
@@ -143,8 +156,8 @@ export const map = {
     },
     'craneStates.company': {
       handler (value) {
-        const content = `<div>${value['单位详细名称']}</div>`
-        const location = value.location
+        const content = `<div>${value.name}</div>`
+        const location = value.lnglat
         this.$refs.infowindowRef.createInfoWindow(content, location)
         this.$refs.mapRef.map.setCenter(location)
       },

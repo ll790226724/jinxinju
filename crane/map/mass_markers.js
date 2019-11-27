@@ -21,7 +21,7 @@ module.exports = {
       component: '@byzanteam/map-ui/base-map',
       position: [0 , 0],
       props: {
-        $mapOptions: '{center: [103.89682,30.793154], zoom: 11, zooms: [11, 20]}',
+        $mapOptions: '{center: [103.89682,30.793154], zoom: 17, zooms: [11, 20]}',
         mapStyle: 'amap://styles/b31f276415bcbad48ed365bfa6651249',
         $style: {
           width: '100%',
