@@ -44,14 +44,6 @@ module.exports = {
       value: []
     },
     {
-      id: 'markerResults',
-      value: []
-    },
-    {
-      id: 'markerGroup',
-      value: []
-    },
-    {
       id: 'companyCloseIconShow',
       value: false
     },

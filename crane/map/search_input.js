@@ -5,6 +5,7 @@ module.exports = [
     position: [40, 30],
     props: {
       placeholder: '请输入关键词',
+      $value: "craneStates.searchValue",
       $style: {
         width: '384px',
         height: '50px',

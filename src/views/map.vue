@@ -1,6 +1,6 @@
 <template>
   <div class="map">
-    <brick-input ref="search-input" @input="(value)=>[setState('searchValue', value)]" placeholder="请输入关键词" :style="{width: '384px', height: '50px', backgroundColor: '#1f2440', position: 'absolute', top: '30px', left: '40px'}">
+    <brick-input ref="search-input" @change="(value)=>[setState('searchValue', value)]" placeholder="请输入关键词" :value="craneStates.searchValue" :style="{width: '384px', height: '50px', backgroundColor: '#1f2440', position: 'absolute', top: '30px', left: '40px'}">
       <template ref="search-input-prefix-template" v-slot:head>
         <brick-icon ref="search-input-prefix-icon" name="search" color="rgba(255, 255, 255, 0.4)" />
       </template>
@@ -31,7 +31,7 @@
               </template>
             </brick-list-optional-item>
           </brick-list>
-          <pagination ref="search-paginator" @page-changed="({ currentPage, perPage })=>[setState('page', currentPage)]" v-if="total > 20" :showTotalCount="false" :showPerPage="false" :showJumper="false" :totalCount="total" :style="{height: '70px', justifyContent: 'center',}" />
+          <pagination ref="search-paginator" @page-changed="({ currentPage, perPage })=>[setState('page', currentPage)]" v-if="total > 20" :showTotalCount="false" :showPerPage="false" :showJumper="false" :totalCount="total" :style="{height: '70px', justifyContent: 'center'}" />
         </div>
       </div>
     </data-loader>
@@ -66,6 +66,9 @@
         </template>
       </vis-multiple-select>
     </data-loader>
+    <brick-button ref="back-button" color="blue" :style="{position: 'absolute', top: '43px', left: '453px'}">
+      返回上一级
+    </brick-button>
   </div>
 </template>
 
@@ -79,6 +82,7 @@ import {
   BrickListOptionalItem,
   Pagination,
   VisMultipleSelect,
+  BrickButton,
 } from '@byzanteam/vis-components'
 import {
   BrickTooltip,
@@ -100,6 +104,7 @@ export const map = {
     BrickListOptionalItem,
     Pagination,
     VisMultipleSelect,
+    BrickButton,
     BrickTooltip,
     BaseMap,
     MassMarker,
@@ -116,8 +121,6 @@ export const map = {
         companyShow: false,
         mapBounds: {southwest: {lat: 0, lng: 0}, northeast: {lat: 0, lng: 0}},
         communities: [],
-        markerResults: [],
-        markerGroup: [],
         companyCloseIconShow: false,
         markerValueMap: {},
         markerStyles: [],
