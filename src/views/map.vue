@@ -10,9 +10,9 @@
         </brick-tooltip>
       </template>
     </brick-input>
-    <data-loader ref="map-component" v-slot="{ results: results }" url="/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data" method="get" :data="[{community: '', location: [0, 0]}]" :params="mapParams" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
-      <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds())]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [113.586456,34.803382], zoom: 11, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
-        <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" :markers="results.map((result) => {return {...result, lnglat: result.location, style: craneStates.markerValueMap[result.community]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
+    <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise&minLng=${this.craneStates.mapBounds.southwest.lng}&maxLng=${this.craneStates.mapBounds.northeast.lng}&minLat=${this.craneStates.mapBounds.southwest.lat}&maxLat=${this.craneStates.mapBounds.northeast.lat}`" method="get" :data="[[]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
+      <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds())]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [103.89682,30.793154], zoom: 11, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
+        <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" :markers="results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
         <info-window ref="infowindowRef" />
       </base-map>
     </data-loader>
@@ -26,7 +26,6 @@
               </span>
               <template ref="search-list-item-description-template" v-slot:description>
                 <div ref="search-list-item-description-wrapper" :style="{display: 'flex'}">
-                  <img ref="search-list-item-description-icon" src="/jingxinju/images/Icon-Positioning.svg" :style="{width: '14px', height: '14px', position: 'relative', top: '3px', marginRight: '4px'}" />
                   <div class="search-list-item-description-text" :style="{color: '#8f919f', fontSize: '14px', lineHeight: '21px', width: '325px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}">
                     {{item[1]}}
                   </div>
@@ -128,22 +127,10 @@ export const map = {
     }
   },
 
-  computed: {
-    mapParams () {
-      return {
-        table: 'nice_enterprise',
-        name: '四川',
-        industry: `'食品制造业','金属制品业'`,
-        page: this.craneStates.page,
-        'per_page': 20
-      }
-    }
-  },
-
   watch: {
     'craneStates.communities' (value) {
       value.forEach((result, index) => {
-        this.craneStates.markerValueMap[result.community] = index + 1
+        this.craneStates.markerValueMap[result[0]] = index + 1
         this.craneStates.markerStyles.push({
           url: `/jingxinju/images/circle${index % 19}.svg`,
           anchor: [6, 6],

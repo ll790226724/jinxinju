@@ -80,20 +80,6 @@ module.exports = {
                           },
                           children: [
                             {
-                              id: 'search-list-item-description-icon',
-                              component: 'img',
-                              props: {
-                                src: '/jingxinju/images/Icon-Positioning.svg',
-                                $style: {
-                                  width: '14px',
-                                  height: '14px',
-                                  position: 'relative',
-                                  top: '3px',
-                                  marginRight: '4px',
-                                }
-                              }
-                            },
-                            {
                               component: 'div',
                               content: '{{item[1]}}',
                               props:{

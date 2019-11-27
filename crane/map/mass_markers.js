@@ -6,10 +6,9 @@ module.exports = {
     results: 'results',
   },
   props: {
-    url: '/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data',
+    $url: "`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise&minLng=${this.craneStates.mapBounds.southwest.lng}&maxLng=${this.craneStates.mapBounds.northeast.lng}&minLat=${this.craneStates.mapBounds.southwest.lat}&maxLat=${this.craneStates.mapBounds.northeast.lat}`",
     method: 'get',
-    $data: "[{community: '', location: [0, 0]}]",
-    $params: 'mapParams',
+    $data: "[[]]",
     $style: {
       width: '100%',
       height: '100%',
@@ -22,7 +21,7 @@ module.exports = {
       component: '@byzanteam/map-ui/base-map',
       position: [0 , 0],
       props: {
-        $mapOptions: '{center: [113.586456,34.803382], zoom: 11, zooms: [11, 20]}',
+        $mapOptions: '{center: [103.89682,30.793154], zoom: 11, zooms: [11, 20]}',
         mapStyle: 'amap://styles/b31f276415bcbad48ed365bfa6651249',
         $style: {
           width: '100%',
@@ -44,7 +43,7 @@ module.exports = {
           id: 'markers',
           component: '@byzanteam/map-ui/mass-marker',
           props: {
-            $markers: "results.map((result) => {return {...result, lnglat: result.location, style: craneStates.markerValueMap[result.community]}})",
+            $markers: "results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})",
             $styles: 'craneStates.markerStyles',
             $options: "{opacity: 1}"
           },
