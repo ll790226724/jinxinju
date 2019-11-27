@@ -20,14 +20,6 @@ module.exports = {
         results: 'detail',
       },
       props: {
-        url: '/v1/components',
-        method: 'get',
-        $data: "[{community: '', 单位详细名称: ''}]",
-        $params: {
-          type: 'PAIR',
-          sourceID: '40eaf98e-1d8c-4154-aaba-80e560517c1a',
-          $sql: "`select location, 单位详细名称, county||street, community from zhengzhou_records where 单位详细名称='${craneStates.company['单位详细名称']}'`",
-        },
         $style: {
           position: 'relative',
           padding: '35px 16px 24px 16px',
@@ -40,6 +32,7 @@ module.exports = {
           id: 'company-name-container',
           component: 'div',
           props: {
+            'v-if': 'detail',
             $style: {
               display: 'flex',
               alignItems: 'center',

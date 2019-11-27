@@ -10,7 +10,7 @@
         </brick-tooltip>
       </template>
     </brick-input>
-    <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise&minLng=${this.craneStates.mapBounds.southwest.lng}&maxLng=${this.craneStates.mapBounds.northeast.lng}&minLat=${this.craneStates.mapBounds.southwest.lat}&maxLat=${this.craneStates.mapBounds.northeast.lat}`" method="get" :data="[[]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
+    <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise&minLng=${this.craneStates.mapBounds.southwest.lng}&maxLng=${this.craneStates.mapBounds.northeast.lng}&minLat=${this.craneStates.mapBounds.southwest.lat}&maxLat=${this.craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
       <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds())]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [103.89682,30.793154], zoom: 11, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
         <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" :markers="results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
         <info-window ref="infowindowRef" />
@@ -38,8 +38,8 @@
       </div>
     </data-loader>
     <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: 'rgb(26, 29, 57)'}">
-      <data-loader ref="company-data" v-slot="{ results: detail }" url="/v1/components" method="get" :data="[{community: '', 单位详细名称: ''}]" :params="{type: 'PAIR', sourceID: '40eaf98e-1d8c-4154-aaba-80e560517c1a', sql: `select location, 单位详细名称, county||street, community from zhengzhou_records where 单位详细名称='${craneStates.company['单位详细名称']}'`}" :style="{position: 'relative', padding: '35px 16px 24px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', backgroundPosition: '100% 100%'}">
-        <div ref="company-name-container" :style="{display: 'flex', alignItems: 'center'}">
+      <data-loader ref="company-data" v-slot="{ results: detail }" :style="{position: 'relative', padding: '35px 16px 24px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', backgroundPosition: '100% 100%'}">
+        <div ref="company-name-container" v-if="detail" :style="{display: 'flex', alignItems: 'center'}">
           <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/jingxinju/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
           <img ref="arrow-icon" @click="()=>[setState('companyShow', false)]" src="/jingxinju/images/Icon-Back.svg" :style="{width: '16px', cursor: 'pointer'}" v-else />
           <span ref="arrow-icon-text" :style="{color: '#fff', fontSize: '18px', fontWeight: '600', marginLeft: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}">

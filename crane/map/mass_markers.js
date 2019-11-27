@@ -8,7 +8,7 @@ module.exports = {
   props: {
     $url: "`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise&minLng=${this.craneStates.mapBounds.southwest.lng}&maxLng=${this.craneStates.mapBounds.northeast.lng}&minLat=${this.craneStates.mapBounds.southwest.lat}&maxLat=${this.craneStates.mapBounds.northeast.lat}`",
     method: 'get',
-    $data: "[[]]",
+    $data: "[['', '', [0, 0]]]",
     $style: {
       width: '100%',
       height: '100%',
