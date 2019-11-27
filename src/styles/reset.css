@@ -59,18 +59,67 @@ table tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.01);
 }
 
+* {
+  box-sizing: border-box;
+}
+
+.amap-container {
+  background-color: #121732 !important;
+}
+
+.amap-logo {
+  display: none !important;
+}
+
+.table.table--dark th,
+.table.table--dark th:hover {
+  line-height: 36px !important;
+  font-size: 14px !important;
+  color: #367eef !important;
+}
+
+.table.table--dark td,
+.table.table--dark td:hover {
+  font-size: 12px !important;
+  line-height: 26px !important;
+  padding: 6px 8px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, .7) !important;
+}
+
+.table.table--dark th,
+.table.table--dark td {
+  text-align: left !important;
+  font-weight: 500;
+}
+
+.table.table--dark .row-index-cell {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: #007afe;
+  border-radius: 50%;
+  font-weight: 500;
+}
+
+.table.table--dark .table__body {
+  max-height: 258px !important;
+}
+
 @font-face {
   font-family: 'Oswald-Regular';
   src:
-    url('/fonts/Oswald-Regular.woff') format('woff'),
-    url('/fonts/Oswald-Regular.woff2') format('woff');
+    url('/jingxinju/fonts/Oswald-Regular.woff') format('woff'),
+    url('/jingxinju/fonts/Oswald-Regular.woff2') format('woff');
   font-weight: normal;
 }
 
 @font-face {
   font-family: 'Oswald-Light';
   src:
-    url('/fonts/Oswald-Light.woff') format('woff'),
-    url('/fonts/Oswald-Light.woff2') format('woff');
+    url('/jingxinju/fonts/Oswald-Light.woff') format('woff'),
+    url('/jingxinju/fonts/Oswald-Light.woff2') format('woff');
   font-weight: normal;
 }
