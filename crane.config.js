@@ -1,4 +1,5 @@
 const mapPage = require('./crane/map')
+const AreasPage = require('./crane/areas/index')
 
 module.exports = {
   // i18n 配置
@@ -23,17 +24,8 @@ module.exports = {
     baseURL: 'http://vis.cdyoue.com:35008/',
   },
   modules: {
-    '@byzanteam/brick': {
-      version: 'latest',
-      order: 1,
-      style: {
-        type: 'injection',
-        path: 'src/theme/default.scss',
-      },
-    },
     '@byzanteam/vis-components': {
       version: '../../vis-components',
-      order: 2,
       style: {
         type: 'normal',
         path: 'dist/index.css',
@@ -41,11 +33,24 @@ module.exports = {
     },
     '@byzanteam/map-ui': {
       version: '../../map-ui',
-      order: 4,
+      style: {
+        type: 'normal',
+        path: 'dist/map-ui.css',
+      },
+    },
+    '@byzanteam/graphite': {
+      version: 'latest',
+    },
+    '@byzanteam/carbonium': {
+      style: {
+        type: 'normal',
+        path: 'dist/carbonium.css',
+      },
     },
   },
   // 页面
   pages: [
     mapPage,
+    AreasPage,
   ],
 }

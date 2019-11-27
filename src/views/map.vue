@@ -36,7 +36,7 @@
       </div>
     </data-loader>
     <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: 'rgb(26, 29, 57)'}">
-      <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%${craneStates.company.name}%`)" method="get" :data="{data: [[]]}">
+      <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%${craneStates.company[0]}%`)" method="get" :data="{data: [[]]}">
         <div v-if="response" :style="{position: 'relative', padding: '35px 16px 24px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', backgroundPosition: '100% 100%'}">
           <div ref="company-name-container" v-if="response" :style="{display: 'flex', alignItems: 'center'}">
             <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/jingxinju/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
@@ -156,8 +156,8 @@ export const map = {
     },
     'craneStates.company': {
       handler (value) {
-        const content = `<div>${value.name}</div>`
-        const location = value.lnglat
+        const content = `<div>${value[0]}</div>`
+        const location = value[3]
         this.$refs.infowindowRef.createInfoWindow(content, location)
         this.$refs.mapRef.map.setCenter(location)
       },
