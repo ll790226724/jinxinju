@@ -18,18 +18,16 @@
     </data-loader>
     <data-loader ref="search-list-data" v-slot="{ response: {data, pageInfo: { total }} }" :url="`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%25${craneStates.searchValue}%25&industry=${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`" method="get" :data="{data: [['']], pageInfo: {total: 0}}" :style="{position: 'absolute', top: '84px', left: '40px'}">
       <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && data" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden'}">
-        <div ref="search-list-container" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', padding: '10px 0', overflow: 'scroll'}">
+        <div ref="search-list-container" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', overflow: 'scroll'}">
           <brick-list class="search-list">
             <brick-list-optional-item ref="search-list-item" v-for="(item, index) in data" :key="index" @click="()=>[setState('company', item), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="item" :index="index + 1">
               <span ref="search-list-item-name">
                 {{item[0]}}
               </span>
               <template ref="search-list-item-description-template" v-slot:description>
-                <div ref="search-list-item-description-wrapper" :style="{display: 'flex'}">
-                  <div class="search-list-item-description-text" :style="{color: '#8f919f', fontSize: '14px', lineHeight: '21px', width: '325px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}">
-                    {{item[1]}}
-                  </div>
-                </div>
+                <span>
+                  {{item[1]}}
+                </span>
               </template>
             </brick-list-optional-item>
           </brick-list>

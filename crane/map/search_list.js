@@ -32,7 +32,6 @@ module.exports = {
               width: '400px',
               maxHeight: '950px',
               backgroundColor: '#1f2440',
-              padding: '10px 0',
               overflow: 'scroll',
             }
           },
@@ -71,31 +70,8 @@ module.exports = {
                       slot: 'description',
                       children: [
                         {
-                          id: 'search-list-item-description-wrapper',
-                          component: 'div',
-                          props: {
-                            $style: {
-                              display: 'flex',
-                            }
-                          },
-                          children: [
-                            {
-                              component: 'div',
-                              content: '{{item[1]}}',
-                              props:{
-                                class: 'search-list-item-description-text',
-                                $style: {
-                                  color: '#8f919f',
-                                  fontSize: '14px',
-                                  lineHeight: '21px',
-                                  width: '325px',
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                  whiteSpace: 'nowrap'
-                                }
-                              }
-                            }
-                          ]
+                          component: 'span',
+                          content: '{{item[1]}}',
                         }
                       ],
                     }
