@@ -15,7 +15,7 @@ module.exports = {
       id: 'search-list-container',
       component: 'div',
       props: {
-        'v-show': 'craneStates.searchValue && !craneStates.companyShow && response',
+        'v-show': 'craneStates.searchValue && !craneStates.companyShow && response.data',
         $style: {
           padding: '10px 0',
           backgroundColor: '#1f2440',
@@ -63,7 +63,16 @@ module.exports = {
                     {
                       id: 'search-list-item-name',
                       component: 'span',
-                      content: '{{item[0]}}'
+                      content: '{{item[0]}}',
+                      props:{
+                        $style: {
+                          display: 'inline-block',
+                          width: '325px',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap'
+                        }
+                      }
                     },
                     {
                       id: 'search-list-item-description-template',
@@ -73,6 +82,15 @@ module.exports = {
                         {
                           component: 'span',
                           content: '{{item[1]}}',
+                          props:{
+                            $style: {
+                              display: 'inline-block',
+                              width: '325px',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap'
+                            }
+                          }
                         }
                       ],
                     }
@@ -90,11 +108,11 @@ module.exports = {
                 }
               },
               props: {
-                'v-if': 'response.total > 20',
+                'v-if': 'response.pageInfo && response.pageInfo.total > 20',
                 $showTotalCount: 'false',
                 $showPerPage: 'false',
                 $showJumper: 'false',
-                $totalCount: 'response.total',
+                $totalCount: 'response.pageInfo.total',
                 $style: {
                   height: '70px',
                   justifyContent: 'center',
