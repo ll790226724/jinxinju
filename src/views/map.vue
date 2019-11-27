@@ -1,6 +1,6 @@
 <template>
   <div class="map">
-    <brick-input ref="search-input" @change="(value)=>[setState('searchValue', value)]" placeholder="请输入关键词" :value="craneStates.searchValue" :style="{width: '384px', height: '50px', backgroundColor: '#1f2440', position: 'absolute', top: '30px', left: '40px'}">
+    <brick-input ref="search-input" @input="(value)=>[setSearchValue(value)]" placeholder="请输入关键词" :value="craneStates.searchValue" :style="{width: '384px', height: '50px', backgroundColor: '#1f2440', position: 'absolute', top: '30px', left: '40px'}">
       <template ref="search-input-prefix-template" v-slot:head>
         <brick-icon ref="search-input-prefix-icon" name="search" color="rgba(255, 255, 255, 0.4)" />
       </template>
@@ -171,6 +171,9 @@ export const map = {
         return `${acc}'${option}',`
       }, '')
     },
+    setSearchValue: _.debounce(function(value) {
+      this.setState('searchValue', value)
+    }, 300),
     getMapScale () {
       const scaleValue = document.body.style.transform.match(/(?<=\().*?(?=\))/)[0]
       return `scale(${1/scaleValue})`

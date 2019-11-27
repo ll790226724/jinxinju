@@ -13,9 +13,9 @@ module.exports = [
       },
     },
     events: {
-      'change': {
+      'input': {
         params: ['value'],
-        actions: ["setState('searchValue', value)"]
+        actions: ["setSearchValue(value)"]
       }
     },
     children: [
