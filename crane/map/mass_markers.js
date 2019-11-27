@@ -43,6 +43,7 @@ module.exports = {
           id: 'markers',
           component: '@byzanteam/map-ui/mass-marker',
           props: {
+            'v-if': "results",
             $markers: "results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})",
             $styles: 'craneStates.markerStyles',
             $options: "{opacity: 1}"

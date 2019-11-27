@@ -12,15 +12,15 @@
     </brick-input>
     <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise&minLng=${this.craneStates.mapBounds.southwest.lng}&maxLng=${this.craneStates.mapBounds.northeast.lng}&minLat=${this.craneStates.mapBounds.southwest.lat}&maxLat=${this.craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
       <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds())]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [103.89682,30.793154], zoom: 11, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
-        <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" :markers="results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
+        <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" v-if="results" :markers="results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
         <info-window ref="infowindowRef" />
       </base-map>
     </data-loader>
-    <data-loader ref="search-list-data" v-slot="{ response: {data, pageInfo: { total }} }" :url="`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%25${craneStates.searchValue}%25&industry=${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`" method="get" :data="{data: [['']], pageInfo: {total: 0}}" :style="{position: 'absolute', top: '84px', left: '40px'}">
-      <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && data" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden'}">
-        <div ref="search-list-container" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', overflow: 'scroll'}">
+    <data-loader ref="search-list-data" v-slot="{ response: response }" :url="`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%25${craneStates.searchValue}%25${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`" method="get" :data="{data: [['']], pageInfo: {total: 0}}" :style="{position: 'absolute', top: '84px', left: '40px'}">
+      <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && response" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden'}">
+        <div ref="search-list-container" v-if="response" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', overflow: 'scroll'}">
           <brick-list class="search-list">
-            <brick-list-optional-item ref="search-list-item" v-for="(item, index) in data" :key="index" @click="()=>[setState('company', item), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="{}" :index="index + 1">
+            <brick-list-optional-item ref="search-list-item" v-for="(item, index) in response.data" :key="index" @click="()=>[setState('company', item), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="{}" :index="index + 1">
               <span ref="search-list-item-name">
                 {{item[0]}}
               </span>
@@ -31,7 +31,7 @@
               </template>
             </brick-list-optional-item>
           </brick-list>
-          <pagination ref="search-paginator" @page-changed="({ currentPage, perPage })=>[setState('page', currentPage)]" v-if="total > 20" :showTotalCount="false" :showPerPage="false" :showJumper="false" :totalCount="total" :style="{height: '70px', justifyContent: 'center'}" />
+          <pagination ref="search-paginator" @page-changed="({ currentPage, perPage })=>[setState('page', currentPage)]" v-if="response.total > 20" :showTotalCount="false" :showPerPage="false" :showJumper="false" :totalCount="response.total" :style="{height: '70px', justifyContent: 'center'}" />
         </div>
       </div>
     </data-loader>
@@ -140,7 +140,6 @@ export const map = {
           size: [10, 10]
         })
       })
-      this.initMapCommunities(value)
     },
     'craneStates.company': {
       handler (value) {
@@ -152,7 +151,7 @@ export const map = {
     },
     'craneStates.selectOptions' (value) {
       if(value.length === 0) {
-        this.initMapCommunities(this.craneStates.communities)
+        this.craneStates.mapCommunities = ''
       } else {
         this.craneStates.mapCommunities = this.genarateCommunities()
       }
@@ -169,7 +168,7 @@ export const map = {
           return `${acc}'${option}'`
         }
         return `${acc}'${option}',`
-      }, '')
+      }, '&industry=')
     },
     setSearchValue: _.debounce(function(value) {
       this.setState('searchValue', value)
@@ -177,14 +176,6 @@ export const map = {
     getMapScale () {
       const scaleValue = document.body.style.transform.match(/(?<=\().*?(?=\))/)[0]
       return `scale(${1/scaleValue})`
-    },
-    initMapCommunities (value) {
-      this.craneStates.mapCommunities = _.reduce(value, (acc, item, index) => {
-        if(index === value.length -1) {
-          return `${acc}'${item[0]}'`
-        }
-        return `${acc}'${item[0]}',`
-      }, '')
     },
     markerMouseoverFunc (marker) {
       const content = `<div>${marker.data.name}</div>`

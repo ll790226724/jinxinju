@@ -3,10 +3,10 @@ module.exports = {
   component: '@byzanteam/vis-components/data-loader',
   position: [40, 84],
   exports: {
-    response: '{data, pageInfo: { total }}',
+    response: 'response',
   },
   props: {
-    $url: "`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%25${craneStates.searchValue}%25&industry=${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`",
+    $url: "`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%25${craneStates.searchValue}%25${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`",
     method: 'get',
     $data: "{data: [['']], pageInfo: {total: 0}}",
   },
@@ -15,7 +15,7 @@ module.exports = {
       id: 'search-list-container',
       component: 'div',
       props: {
-        'v-show': 'craneStates.searchValue && !craneStates.companyShow && data',
+        'v-show': 'craneStates.searchValue && !craneStates.companyShow && response',
         $style: {
           padding: '10px 0',
           backgroundColor: '#1f2440',
@@ -28,6 +28,7 @@ module.exports = {
           id: 'search-list-container',
           component: 'div',
           props: {
+            'v-if': "response",
             $style: {
               width: '400px',
               maxHeight: '950px',
@@ -46,7 +47,7 @@ module.exports = {
                   id: 'search-list-item',
                   component: '@byzanteam/vis-components/brick-list-optional-item',
                   vfor: {
-                    data: 'data',
+                    data: 'response.data',
                     exports: {item: 'item', index: 'index'}
                   },
                   props: {
@@ -89,11 +90,11 @@ module.exports = {
                 }
               },
               props: {
-                'v-if': 'total > 20',
+                'v-if': 'response.total > 20',
                 $showTotalCount: 'false',
                 $showPerPage: 'false',
                 $showJumper: 'false',
-                $totalCount: 'total',
+                $totalCount: 'response.total',
                 $style: {
                   height: '70px',
                   justifyContent: 'center',
