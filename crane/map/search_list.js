@@ -20,7 +20,8 @@ module.exports = {
           padding: '10px 0',
           backgroundColor: '#1f2440',
           maxHeight: '970px',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          borderRadius: '4px',
         }
       },
       children: [
@@ -70,7 +71,9 @@ module.exports = {
                           width: '325px',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
+                          whiteSpace: 'nowrap',
+                          fontSize: '16px',
+                          lineHeight: '24px',
                         }
                       }
                     },
@@ -88,7 +91,9 @@ module.exports = {
                               width: '325px',
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap'
+                              whiteSpace: 'nowrap',
+                              fontSize: '14px',
+                              lineHeight: '21px',
                             }
                           }
                         }

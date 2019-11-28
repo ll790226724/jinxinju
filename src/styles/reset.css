@@ -1,3 +1,11 @@
+.select-trigger {
+  line-height: 2.05rem !important;
+}
+
+.select-trigger-inputting__placeholder {
+  font-size: 14px;
+}
+
 .select-popover .popover__content {
   width: 100% !important;
 }
@@ -29,13 +37,11 @@
   border-bottom-color: #313c56 !important;
 }
 
-.list__item--optional:hover .list__item__description {
-  color: #007afe;
-}
-
 .list__item__order-index {
   flex: 0 0 10% !important;
   text-align: center;
+  font-size: 16px;
+  margin-top: 3px;
 }
 
 .amap-info-contentContainer .amap-info-content {

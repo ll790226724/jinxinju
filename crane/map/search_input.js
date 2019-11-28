@@ -9,7 +9,8 @@ module.exports = [
       $style: {
         width: '400px',
         height: '50px',
-        backgroundColor: '#1f2440'
+        backgroundColor: '#1f2440',
+        borderRadius: '4px',
       },
     },
     events: {

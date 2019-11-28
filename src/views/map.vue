@@ -1,6 +1,6 @@
 <template>
   <div class="map">
-    <brick-input ref="search-input" @input="(value)=>[setSearchValue(value)]" placeholder="请输入关键词" :value="craneStates.searchValue" :style="{width: '400px', height: '50px', backgroundColor: '#1f2440', position: 'absolute', top: '30px', left: '40px'}">
+    <brick-input ref="search-input" @input="(value)=>[setSearchValue(value)]" placeholder="请输入关键词" :value="craneStates.searchValue" :style="{width: '400px', height: '50px', backgroundColor: '#1f2440', borderRadius: '4px', position: 'absolute', top: '30px', left: '40px'}">
       <template ref="search-input-prefix-template" v-slot:head>
         <brick-icon ref="search-input-prefix-icon" name="search" color="rgba(255, 255, 255, 0.4)" />
       </template>
@@ -17,15 +17,15 @@
       </base-map>
     </data-loader>
     <data-loader ref="search-list-data" v-slot="{ response: response }" :url="`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%25${craneStates.searchValue}%25${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`" method="get" :data="{data: [['']], pageInfo: {total: 0}}" :style="{position: 'absolute', top: '84px', left: '40px'}">
-      <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && response.data" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden'}">
+      <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && response.data" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden', borderRadius: '4px'}">
         <div ref="search-list-container" v-if="response" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', overflow: 'scroll'}">
           <brick-list class="search-list">
             <brick-list-optional-item ref="search-list-item" v-for="(item, index) in response.data" :key="index" @click="()=>[setState('company', item), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="{}" :index="index + 1">
-              <span ref="search-list-item-name" :style="{display: 'inline-block', width: '325px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}">
+              <span ref="search-list-item-name" :style="{display: 'inline-block', width: '325px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '16px', lineHeight: '24px'}">
                 {{item[0]}}
               </span>
               <template ref="search-list-item-description-template" v-slot:description>
-                <span :style="{display: 'inline-block', width: '325px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}">
+                <span :style="{display: 'inline-block', width: '325px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '14px', lineHeight: '21px'}">
                   {{item[1]}}
                 </span>
               </template>
@@ -35,9 +35,9 @@
         </div>
       </div>
     </data-loader>
-    <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: 'rgb(26, 29, 57)'}">
+    <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: '#1f2440', borderRadius: '4px'}">
       <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%${craneStates.company[0]}%`)" method="get" :data="{data: [[]]}">
-        <div v-if="response" :style="{position: 'relative', padding: '35px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', backgroundPosition: '100% 100%'}">
+        <div v-if="response" :style="{position: 'relative', padding: '35px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', borderRadius: '4px 4px 0 0'}">
           <div ref="company-name-container" v-if="response" :style="{display: 'flex', alignItems: 'center'}">
             <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/jingxinju/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
             <img ref="arrow-icon" @click="()=>[setState('companyShow', false)]" src="/jingxinju/images/Icon-Back.svg" :style="{width: '16px', cursor: 'pointer'}" v-else />
@@ -47,11 +47,11 @@
           </div>
         </div>
         <table ref="details-table" v-if="response">
-          <tr ref="industry-tr" v-for="(item, key) in response.schema" :key="key" v-if="craneStates.tableKeyMap[item.field]" :style="{borderBottom: '1px  solid  rgba(255, 255, 255, .03)'}">
-            <td ref="industry-th" :style="{width: '140px', verticalAlign: 'middle', padding: '10px 8px ', borderRight: '1px, solid, rgba(255, 255, 255, .03)', color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400, lineHeight: '20px', textAlign: 'left', fontSize: '14px'}">
+          <tr ref="industry-tr" v-for="(item, key) in response.schema" :key="key" v-if="craneStates.tableKeyMap[item.field]" :style="{borderBottom: '1px solid rgba(255, 255, 255, .03)'}">
+            <td ref="industry-th" :style="{width: '140px', verticalAlign: 'middle', padding: '20px 8px ', borderRight: '1px solid rgba(255, 255, 255, .03)', color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400, lineHeight: '20px', textAlign: 'left', fontSize: '14px'}">
               {{craneStates.tableKeyMap[item.field]}}
             </td>
-            <td ref="details-dependency-td" :style="{width: '260px', verticalAlign: 'middle', padding: '10px 8px ', color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400, lineHeight: '20px', textAlign: 'left', fontSize: '14px'}">
+            <td ref="details-dependency-td" :style="{width: '260px', verticalAlign: 'middle', padding: '20px 8px ', color: 'rgba(255, 255, 255, 0.7)', fontWeight: 400, lineHeight: '20px', textAlign: 'left', fontSize: '14px'}">
               {{ response.data[0][key] }}
             </td>
           </tr>

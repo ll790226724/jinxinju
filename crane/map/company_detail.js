@@ -9,7 +9,8 @@ module.exports = {
       position: 'absolute',
       top: '84px',
       left: '40px',
-      backgroundColor: 'rgb(26, 29, 57)',
+      backgroundColor: '#1f2440',
+      borderRadius: '4px',
     },
   },
   children: [
@@ -33,7 +34,7 @@ module.exports = {
               position: 'relative',
               padding: '35px 16px',
               backgroundImage: 'url(/jingxinju/images/map-head-bg.png)',
-              backgroundPosition: '100% 100%'
+              borderRadius: '4px 4px 0 0'
             }
           },
           children: [
@@ -121,7 +122,7 @@ module.exports = {
               props: {
                 'v-if': 'craneStates.tableKeyMap[item.field]',
                 $style: {
-                  borderBottom: '1px  solid  rgba(255, 255, 255, .03)',
+                  borderBottom: '1px solid rgba(255, 255, 255, .03)',
                 },
               },
               children: [
@@ -133,8 +134,8 @@ module.exports = {
                     $style: {
                       width: '140px',
                       verticalAlign: 'middle',
-                      padding: '10px 8px ',
-                      borderRight: '1px, solid, rgba(255, 255, 255, .03)',
+                      padding: '20px 8px ',
+                      borderRight: '1px solid rgba(255, 255, 255, .03)',
                       color: 'rgba(255, 255, 255, 0.7)',
                       $fontWeight: 400,
                       lineHeight: '20px',
@@ -151,7 +152,7 @@ module.exports = {
                     $style: {
                       width: '260px',
                       verticalAlign: 'middle',
-                      padding: '10px 8px ',
+                      padding: '20px 8px ',
                       color: 'rgba(255, 255, 255, 0.7)',
                       $fontWeight: 400,
                       lineHeight: '20px',
