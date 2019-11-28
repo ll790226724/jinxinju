@@ -14,8 +14,8 @@ export default new Router({
       component: pages.map,
     },
     {
-      name: 'areas',
-      path: '/:table/areas',
+      name: 'citizen',
+      path: '/citizen',
       component: pages.areas,
     },
   ],

@@ -27,6 +27,8 @@ exports.donutComponent = {
     $style: {
       width: '400px',
       height: '217px',
+      borderRadius: '4px',
+      overflow: 'hidden',
     },
     $data: "[[0]]",
   },
@@ -111,7 +113,7 @@ exports.mapComponent = {
           component: '@byzanteam/map-ui/marker-point',
           id: 'marker-point',
           vfor: {
-            data: 'craneStates.areas',
+            data: 'normalAreas',
             exports: {
               item: 'area',
             },
@@ -121,18 +123,66 @@ exports.mapComponent = {
               actions: ["setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)"],
             },
             'marker-dbclicked': {
-              actions: ["$router.push({ name: 'map', params: { street: area.id }})"],
-            },
+              actions: [$router.push({ name: 'map', params: { street: area.id }})]
+            }
           },
           props: {
             $marker: {
               $id: 'area.id',
-              $label: "[area.id, area.count + '个']",
+              $label: "[area.id, '共有企业:' + area.count + '个']",
               $location: 'area.location',
             },
             icon: 'circle-o',
-            $markerStyle: 'craneStates.markerStyle',
-            $innerLabelStyle: 'craneStates.innerLabelStyle'
+            $markerStyle: {
+              strokeColor: 'rgb(0, 122, 254)',
+              $strokeWeight: '1',
+              color: 'rgba(0, 122, 254, .12)',
+              $size: 130,
+              textAlign: 'center',
+            },
+            $innerLabelStyle: {
+              color: 'white',
+              $textStyleMap: "[{fontSize: 16}, {fontSize: 14}]",
+              offset: [0, 45],
+            },
+          },
+        },
+        {
+          component: '@byzanteam/map-ui/marker-point',
+          id: 'marker-point',
+          vfor: {
+            data: 'specialAreas',
+            exports: {
+              item: 'area',
+            },
+          },
+          events: {
+            'marker-clicked': {
+              actions: ["setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)"],
+            },
+            'marker-dbclicked': {
+              actions: [$router.push({ name: 'map', params: { street: area.id }})]
+            }
+          },
+          props: {
+            $marker: {
+              $id: 'area.id',
+              $label: "[area.id]",
+              $location: 'area.location',
+            },
+            icon: 'circle-o',
+            $markerStyle: {
+              strokeColor: 'rgb(0, 122, 254, .12)',
+              $strokeWeight: 1,
+              color: 'rgb(0, 122, 254)',
+              $size: 14,
+              textAlign: 'center',
+            },
+            $innerLabelStyle: {
+              color: '#367eef',
+              $textStyleMap: "[{fontSize: 16}]",
+              $offset: "[-8*area.id.length+4, 30]",
+            },
           },
         },
       ],
