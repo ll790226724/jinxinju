@@ -10,7 +10,7 @@ export default new Router({
   routes: [
     {
       name: 'map',
-      path: '/map',
+      path: '/map/:street',
       component: pages.map,
     },
     {

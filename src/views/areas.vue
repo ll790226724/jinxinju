@@ -3,12 +3,12 @@
     <div :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
       <base-map ref="baseMap" @map-created="()=>[getComponent('baseMap').setCenter([103.797642, 30.838752])]" features="none" :useMapUi="true" :mapOptions="{zoom: 12}">
         <regions :areas="craneStates.geojson" :areaStyle="{strokeColor: '#363856', strokeWeight: 2, fillOpacity: 0}" :areaHoverStyle="{fillOpacity: 0}" />
-        <marker-point ref="marker-point"v-for="area in craneStates.areas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" :marker="{id: area.id, label: [area.id, area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="{strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: 130, textAlign: 'center'}" :innerLabelStyle="{color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}}" />
+        <marker-point ref="marker-point" v-for="area in craneStates.areas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" @marker-dbclicked="()=>[router.push({ name: 'map', params: { street: craneStates.currentArea }})]" :marker="{id: area.id, label: [area.id, area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="{strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: 130, textAlign: 'center'}" :innerLabelStyle="{color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}}" />
       </base-map>
     </div>
     <data-loader @requestDone="(exports)=>[setState('areas', exports.results.map((item) => ({ id: item[0], count: item[1], location: craneStates.areasLocationMap[item[0]] })))]" url="/v1/components/ab5aac88-eb86-4d83-8107-090dabc16632/data?table=nice_enterprise" />
     <div :style="{width: '400px', height: '798px', backgroundColor: '#1f2240', borderRadius: '4px', position: 'absolute', top: '30px', left: '40px'}">
-      <img :style="{width: '400px', height: '150px', position: 'absolute', top: '0px', left: '0px'}" src="/jingxinjuclient/images/Head-Bg01.png" />
+      <img :style="{width: '400px', height: '150px', position: 'absolute', top: '0px', left: '0px'}" src="/jingxinju/images/map-head-bg.png" />
       <div :style="{color: '#d8d8d8', display: 'inline-flex', position: 'absolute', top: '57px', left: '15px'}">
         <icon name="icon-company" size="20px" />
       </div>

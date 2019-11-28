@@ -120,6 +120,9 @@ exports.mapComponent = {
             'marker-clicked': {
               actions: ["setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)"],
             },
+            'marker-dbclicked': {
+              actions: ["router.push({ name: 'map', params: { street: craneStates.currentArea }})"],
+            },
           },
           props: {
             $marker: {
