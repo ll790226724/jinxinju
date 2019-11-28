@@ -6,7 +6,7 @@ module.exports = {
     results: 'results',
   },
   props: {
-    url: '/v1/components/80a9cb47-606d-48f1-952d-7b03d1c238fd/data?table=nice_enterprise',
+    $url: "`/v1/components/80a9cb47-606d-48f1-952d-7b03d1c238fd/data?table=${routeParams.table}`",
     method: 'get',
     $data: "[['']]",
     $style: {

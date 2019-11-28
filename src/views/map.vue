@@ -10,13 +10,13 @@
         </brick-tooltip>
       </template>
     </brick-input>
-    <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise${craneStates.mapCommunities}&minLng=${craneStates.mapBounds.southwest.lng}&maxLng=${craneStates.mapBounds.northeast.lng}&minLat=${craneStates.mapBounds.southwest.lat}&maxLat=${craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
+    <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=${routeParams.table}${craneStates.mapCommunities}&minLng=${craneStates.mapBounds.southwest.lng}&maxLng=${craneStates.mapBounds.northeast.lng}&minLat=${craneStates.mapBounds.southwest.lat}&maxLat=${craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
       <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds()), $refs.mapRef.setCenter(craneStates.streetLntlatsMap[routeParams.street])]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [103.89682,30.793154], zoom: 17, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
         <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" v-if="results" :markers="results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
         <info-window ref="infowindowRef" />
       </base-map>
     </data-loader>
-    <data-loader ref="search-list-data" v-slot="{ response: response }" :url="`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%25${craneStates.searchValue}%25${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`" method="get" :data="{data: [['']], pageInfo: {total: 0}}" :style="{position: 'absolute', top: '84px', left: '40px'}">
+    <data-loader ref="search-list-data" v-slot="{ response: response }" :url="`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=${routeParams.table}&name=%25${craneStates.searchValue}%25${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`" method="get" :data="{data: [['']], pageInfo: {total: 0}}" :style="{position: 'absolute', top: '84px', left: '40px'}">
       <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && response.data" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden', borderRadius: '4px'}">
         <div ref="search-list-container" v-if="response" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', overflow: 'scroll'}">
           <brick-list class="search-list">
@@ -36,7 +36,7 @@
       </div>
     </data-loader>
     <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: '#1f2440', borderRadius: '4px'}">
-      <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%${craneStates.company[0]}%`)" method="get" :data="{data: [[]]}">
+      <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=${routeParams.table}&name=%${craneStates.company[0]}%`)" method="get" :data="{data: [[]]}">
         <div v-if="response" :style="{position: 'relative', padding: '35px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', borderRadius: '4px 4px 0 0'}">
           <div ref="company-name-container" v-if="response" :style="{display: 'flex', alignItems: 'center'}">
             <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/jingxinju/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
@@ -58,7 +58,7 @@
         </table>
       </data-loader>
     </div>
-    <data-loader ref="multipe-select-component" v-slot="{ results: results }" @requestDone="()=>[setState('communities', getComponent('multipe-select-component').results)]" url="/v1/components/80a9cb47-606d-48f1-952d-7b03d1c238fd/data?table=nice_enterprise" method="get" :data="[['']]" :style="{width: '342px', height: '53px', position: 'absolute', top: '30px', left: '1540px'}">
+    <data-loader ref="multipe-select-component" v-slot="{ results: results }" @requestDone="()=>[setState('communities', getComponent('multipe-select-component').results)]" :url="`/v1/components/80a9cb47-606d-48f1-952d-7b03d1c238fd/data?table=${routeParams.table}`" method="get" :data="[['']]" :style="{width: '342px', height: '53px', position: 'absolute', top: '30px', left: '1540px'}">
       <vis-multiple-select ref="select" v-model="craneStates.selectOptions" placeholder="全部类型" labelKey="label" valueKey="value" :options="results.map((result, index) => {return {label: result[0], value: result[0], color: craneStates.colorMap[index % 19]}})">
         <template ref="select-value-template" v-slot:value="{option}">
           <div ref="select-value-container">

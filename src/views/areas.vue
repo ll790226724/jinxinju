@@ -6,13 +6,13 @@
         <marker-point ref="marker-point" v-for="area in craneStates.areas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" @marker-dbclicked="()=>[$router.push({ name: 'map', params: { street: area.id }})]" :marker="{id: area.id, label: [area.id, area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="craneStates.markerStyle" :innerLabelStyle="craneStates.innerLabelStyle" />
       </base-map>
     </div>
-    <data-loader @requestDone="(exports)=>[setState('areas', exports.results.map((item) => ({ id: item[0], count: item[1], location: craneStates.areasLocationMap[item[0]] })))]" url="/v1/components/ab5aac88-eb86-4d83-8107-090dabc16632/data?table=nice_enterprise" />
+    <data-loader @requestDone="(exports)=>[setState('areas', exports.results.map((item) => ({ id: item[0], count: item[1], location: craneStates.areasLocationMap[item[0]] })))]" :url="`/v1/components/ab5aac88-eb86-4d83-8107-090dabc16632/data?table=${routeParams.table}`" />
     <div :style="{width: '400px', height: '798px', backgroundColor: '#1f2240', borderRadius: '4px', position: 'absolute', top: '30px', left: '40px'}">
       <img :style="{width: '400px', height: '150px', position: 'absolute', top: '0px', left: '0px'}" src="/jingxinju/images/map-head-bg.png" />
       <div :style="{color: '#d8d8d8', display: 'inline-flex', position: 'absolute', top: '57px', left: '15px'}">
         <icon name="icon-company" size="20px" />
       </div>
-      <data-loader v-slot="{ results: results }" :url="`/v1/components/1946f34d-a2b8-4f97-b956-4dc11dbfd083/data?table=nice_enterprise${craneStates.currentArea?'&area=\''+craneStates.currentArea+'\'':''}`" method="get" :data="[[0]]" :style="{position: 'absolute', top: '29px', left: '43px'}">
+      <data-loader v-slot="{ results: results }" :url="`/v1/components/1946f34d-a2b8-4f97-b956-4dc11dbfd083/data?table=${routeParams.table}${craneStates.currentArea?'&area=\''+craneStates.currentArea+'\'':''}`" method="get" :data="[[0]]" :style="{position: 'absolute', top: '29px', left: '43px'}">
         <digital-roll titlePosition="left" :content="{title: '合规企业总计', digital: getAttr(getAttr(results, '0'), '0'), suffix: '个'}" :titleStyle="{color: '#d8d8d8', fontSize: '18px', fontWeight: '500'}" :digitalStyle="{fontSize: '44px', color: '#dece83', fontFamily: 'Oswald-Regular', fontWeight: '400', letterSpacing: '1px'}" :suffixStyle="{color: '#d8d8d8', fontWeight: '500', fontSize: '18px', lineHeight: '1'}" />
       </data-loader>
       <div :style="{marginTop: '100px', position: 'relative', lineHeight: '49px', width: '400px', paddingLeft: '14px', borderTop: '1px solid rgba(255, 255, 255, .1)'}">
@@ -31,7 +31,7 @@
           <brick-icon @click="()=>[setState('filterKey', '')]" name="times-circle" />
         </template>
       </brick-input>
-      <data-loader v-slot="{ results: results }" :data="[['陴都区金和塑料厂', '分类1'], ['aaa工厂', '分类2']]" :url="`/v1/components/b758b6d2-e8d0-41bb-b24a-58228e1fb576/data?table=nice_enterprise&${craneStates.currentArea?'&area=\''+craneStates.currentArea+'\'':''}`" :style="{width: '400px', height: '296px'}">
+      <data-loader v-slot="{ results: results }" :data="[['陴都区金和塑料厂', '分类1'], ['aaa工厂', '分类2']]" :url="`/v1/components/b758b6d2-e8d0-41bb-b24a-58228e1fb576/data?table=${routeParams.table}&${craneStates.currentArea?'&area=\''+craneStates.currentArea+'\'':''}`" :style="{width: '400px', height: '296px'}">
         <vis-table :data="(results||[]).filter((item)=>!craneStates.filterKey||item[0].indexOf(craneStates.filterKey)>-1).map((item,i)=>({index:i+1,name:item[0],category:item[1]}))" theme="dark" :headers="[{width: 40, key: 'index', title: ''}, {width: 220, key: 'name', title: '企业名称'}, {width: 140, key: 'category', title: '行业属性'}]">
           <template v-slot="{ cell: cell, columnKey: columnKey }">
             <span :class="columnKey === 'index' ? 'row-index-cell' : ''">
@@ -40,11 +40,11 @@
           </template>
         </vis-table>
       </data-loader>
-      <data-loader v-slot="{ results: results }" :data="[]" :url="`/v1/components/1aebcfcb-3de4-4259-b880-fbd9a7da7a4f/data?table=nice_enterprise&industry='${craneStates.barChartIndustries.join('\',\'')}'${craneStates.currentArea?'&area=\''+craneStates.currentArea+'\'':''}`" :style="{width: '400px', height: '280px', position: 'absolute', top: '512px', left: '0px'}">
+      <data-loader v-slot="{ results: results }" :data="[]" :url="`/v1/components/1aebcfcb-3de4-4259-b880-fbd9a7da7a4f/data?table=${routeParams.table}&industry='${craneStates.barChartIndustries.join('\',\'')}'${craneStates.currentArea?'&area=\''+craneStates.currentArea+'\'':''}`" :style="{width: '400px', height: '280px', position: 'absolute', top: '512px', left: '0px'}">
         <vertical-bar :data="results.map((item) => ({key: item[0], value: item[1]}))" labelKey="key" valueKey="value" :crossAxis="{range: {count: 6}, lineStyle: {stroke: 'transparent'}, labelStyle: {size: 12, color: '#fff'}, unit: '个'}" :series="[['#007afe', '#007afe33']]" :mainAxis="{labelStyle: {rotate: -45, size: 12, color: '#fff'}, labelLength: 9, lineStyle: {stroke: 'transparent'}}" :theme="{background: 'transparent'}" :labels="[{ fill: '#fff', stroke: '#fff', size: 12}]" :tooltipOptions="{background: 'rgba(60, 71, 89, .9)', text: {size: 14, fill: '#ffffff'}, title: {fill: '#fff'}}" />
       </data-loader>
     </div>
-    <data-loader v-slot="{ results: results, response: response }" url="/v1/components/5d4574bf-fb0f-47fe-87e9-c33680aecaf0/data?table=nice_enterprise" :style="{width: '400px', height: '217px', position: 'absolute', top: '841px', left: '40px'}" :data="[[0]]">
+    <data-loader v-slot="{ results: results, response: response }" :url="`/v1/components/5d4574bf-fb0f-47fe-87e9-c33680aecaf0/data?table=${routeParams.table}`" :style="{width: '400px', height: '217px', position: 'absolute', top: '841px', left: '40px'}" :data="[[0]]">
       <donut :data="results[0].map((item, index) => ({ key: craneStates.categoryMap[response.schema[index].field], value: item }))" label-key="key" value-key="value" :innerRadius="0.655" :theme="{background: '#1f2240', colors: ['#007afe', '#dece84', '#8f919f']}" :guide="{text: '企业类型占比', stroke: '#ffffff', size: 12, align: 'center'}" :tooltipOptions="{background: 'rgba(60, 71, 89, .9)', text: {size: 14, fill: '#ffffff'}}" v-if="response" />
     </data-loader>
   </div>

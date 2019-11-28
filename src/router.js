@@ -10,12 +10,12 @@ export default new Router({
   routes: [
     {
       name: 'map',
-      path: '/map/:street',
+      path: '/:table/map/:street',
       component: pages.map,
     },
     {
       name: 'areas',
-      path: '/areas',
+      path: '/:table/areas',
       component: pages.areas,
     },
   ],

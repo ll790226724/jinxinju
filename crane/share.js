@@ -23,7 +23,7 @@ exports.donutComponent = {
   component: '@byzanteam/vis-components/data-loader',
   position: [40, 841],
   props: {
-    url: '/v1/components/5d4574bf-fb0f-47fe-87e9-c33680aecaf0/data?table=nice_enterprise',
+    $url: "`/v1/components/5d4574bf-fb0f-47fe-87e9-c33680aecaf0/data?table=${routeParams.table}`",
     $style: {
       width: '400px',
       height: '217px',
@@ -143,7 +143,7 @@ exports.mapComponent = {
 exports.areasLoader = {
   component: '@byzanteam/vis-components/data-loader',
   props: {
-    url: '/v1/components/ab5aac88-eb86-4d83-8107-090dabc16632/data?table=nice_enterprise',
+    $url: "`/v1/components/ab5aac88-eb86-4d83-8107-090dabc16632/data?table=${routeParams.table}`",
   },
   events: {
     requestDone: {

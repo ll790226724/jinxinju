@@ -21,7 +21,7 @@ module.exports = {
         response: 'response',
       },
       props: {
-        $url: "encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%${craneStates.company[0]}%`)",
+        $url: "encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=${routeParams.table}&name=%${craneStates.company[0]}%`)",
         method: 'get',
         $data: "{data: [[]]}",
       },
