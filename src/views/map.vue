@@ -37,10 +37,10 @@
     </data-loader>
     <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: '#1f2440', borderRadius: '4px', overflow: 'scroll'}">
       <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=${craneStates.routerMap[routeParams.table]}&name=%${craneStates.company.name}%`)" method="get" :data="{data: [[]]}">
-        <div v-if="response" :style="{position: 'relative', padding: '35px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', borderRadius: '4px 4px 0 0'}">
+        <div v-if="response" :style="{position: 'relative', padding: '35px 16px', backgroundImage: 'url(/piduzxqy/images/map-head-bg.png)', borderRadius: '4px 4px 0 0'}">
           <div ref="company-name-container" v-if="response" :style="{display: 'flex', alignItems: 'center'}">
-            <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/jingxinju/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
-            <img ref="arrow-icon" @click="()=>[setState('companyShow', false)]" src="/jingxinju/images/Icon-Back.svg" :style="{width: '16px', cursor: 'pointer'}" v-else />
+            <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/piduzxqy/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
+            <img ref="arrow-icon" @click="()=>[setState('companyShow', false)]" src="/piduzxqy/images/Icon-Back.svg" :style="{width: '16px', cursor: 'pointer'}" v-else />
             <span ref="arrow-icon-text" :style="{color: '#fff', fontSize: '18px', fontWeight: '600', marginLeft: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}">
               {{ response.data[0][0] }}
             </span>
@@ -150,7 +150,7 @@ export const map = {
       value.forEach((result, index) => {
         this.craneStates.markerValueMap[result[0]] = index + 1
         this.craneStates.markerStyles.push({
-          url: `/jingxinju/images/circle${index % 19}.svg`,
+          url: `/piduzxqy/images/circle${index % 19}.svg`,
           anchor: [6, 6],
           size: [10, 10]
         })

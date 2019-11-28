@@ -34,7 +34,7 @@ module.exports = {
             $style: {
               position: 'relative',
               padding: '35px 16px',
-              backgroundImage: 'url(/jingxinju/images/map-head-bg.png)',
+              backgroundImage: 'url(/piduzxqy/images/map-head-bg.png)',
               borderRadius: '4px 4px 0 0'
             }
           },
@@ -55,7 +55,7 @@ module.exports = {
                   component: 'img',
                   props: {
                     'v-if': 'craneStates.companyCloseIconShow',
-                    src: '/jingxinju/images/Icon-Close.svg',
+                    src: '/piduzxqy/images/Icon-Close.svg',
                     $style: {
                       width: '16px',
                       cursor: 'pointer',
@@ -71,7 +71,7 @@ module.exports = {
                   id: 'arrow-icon',
                   component: 'img',
                   props: {
-                    src: '/jingxinju/images/Icon-Back.svg',
+                    src: '/piduzxqy/images/Icon-Back.svg',
                     $style: {
                       width: '16px',
                       cursor: 'pointer',

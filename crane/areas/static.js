@@ -21,7 +21,7 @@ module.exports = [
             width: '400px',
             height: '150px',
           },
-          src: '/jingxinju/images/map-head-bg.png',
+          src: '/piduzxqy/images/map-head-bg.png',
         },
       },
       {

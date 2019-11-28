@@ -117,15 +117,15 @@ table tr:nth-child(even) {
 @font-face {
   font-family: 'Oswald-Regular';
   src:
-    url('/jingxinju/fonts/Oswald-Regular.woff') format('woff'),
-    url('/jingxinju/fonts/Oswald-Regular.woff2') format('woff');
+    url('/piduzxqy/fonts/Oswald-Regular.woff') format('woff'),
+    url('/piduzxqy/fonts/Oswald-Regular.woff2') format('woff');
   font-weight: normal;
 }
 
 @font-face {
   font-family: 'Oswald-Light';
   src:
-    url('/jingxinju/fonts/Oswald-Light.woff') format('woff'),
-    url('/jingxinju/fonts/Oswald-Light.woff2') format('woff');
+    url('/piduzxqy/fonts/Oswald-Light.woff') format('woff'),
+    url('/piduzxqy/fonts/Oswald-Light.woff2') format('woff');
   font-weight: normal;
 }
