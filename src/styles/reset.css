@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .select-trigger {
   line-height: 2.05rem !important;
 }
@@ -65,10 +69,6 @@ table tr:nth-child(even) {
   background-color: rgba(255, 255, 255, 0.01);
 }
 
-* {
-  box-sizing: border-box;
-}
-
 .amap-container {
   background-color: #121732 !important;
 }
@@ -112,6 +112,57 @@ table tr:nth-child(even) {
 
 .table.table--dark .table__body {
   max-height: 258px !important;
+}
+
+.table.table--dark th,
+.table.table--dark th:hover {
+  line-height: 36px !important;
+  font-size: 14px !important;
+  color: #367eef !important;
+}
+
+.table.table--dark .table__head thead {
+  border-bottom-width: 1px !important;
+  border-bottom-color: rgba(255, 255, 255, .04) !important;
+}
+
+.table.table--dark td,
+.table.table--dark td:hover {
+  font-size: 12px !important;
+  line-height: 26px !important;
+  padding: 6px 8px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, .7) !important;
+}
+
+.table.table--dark th,
+.table.table--dark td {
+  text-align: left !important;
+  font-weight: 500;
+}
+
+.table.table--dark .row-index-cell {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: #007afe;
+  border-radius: 50%;
+  font-weight: 500;
+}
+
+.table.table--dark .table__body {
+  max-height: 258px !important;
+}
+
+.citizen .brick-input-control .brick-input-control__addon:last-child:after,
+.citizen .brick-input-control:focus .brick-input-control__addon:last-child:after {
+  background-color: rgba(255, 255, 255, .03) !important;
+}
+
+.citizen .brick-input-control:hover .brick-input-control__addon:last-child:after {
+  background-color: rgba(255, 255, 255, .06) !important;
 }
 
 @font-face {
