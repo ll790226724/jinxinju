@@ -16,7 +16,7 @@ export default new Router({
     {
       name: 'citizen',
       path: '/citizen',
-      component: pages.areas,
+      component: pages.citizen,
     },
   ],
 })

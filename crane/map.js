@@ -3,6 +3,7 @@ const mapPartial = require('./map/index')
 module.exports = {
   route: {
     name: 'map',
+    path: ':table/map/:street'
   },
   title: '合规企业',
   states: [

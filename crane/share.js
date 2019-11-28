@@ -23,7 +23,7 @@ exports.donutComponent = {
   component: '@byzanteam/vis-components/data-loader',
   position: [40, 841],
   props: {
-    $url: "`/v1/components/5d4574bf-fb0f-47fe-87e9-c33680aecaf0/data?table=${craneStates.routerMap[routeParams.table]}`",
+    url: '/v1/components/5d4574bf-fb0f-47fe-87e9-c33680aecaf0/data?table=table=nice_enterprise',
     $style: {
       width: '400px',
       height: '217px',
@@ -123,7 +123,7 @@ exports.mapComponent = {
               actions: ["setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)"],
             },
             'marker-dbclicked': {
-              actions: [$router.push({ name: 'map', params: { street: area.id }})]
+              actions: ["$router.push({ name: 'map', params: { street: area.id }})"]
             }
           },
           props: {
@@ -161,7 +161,7 @@ exports.mapComponent = {
               actions: ["setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)"],
             },
             'marker-dbclicked': {
-              actions: [$router.push({ name: 'map', params: { street: area.id }})]
+              actions: ["$router.push({ name: 'map', params: { street: area.id }})"]
             }
           },
           props: {

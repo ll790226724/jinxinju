@@ -9,7 +9,7 @@
     </div>
     <data-loader @requestDone="(exports)=>[setState('areas', exports.results.map((item) => ({ id: item[0], count: item[1], location: craneStates.areasLocationMap[item[0]] })))]" :url="`/v1/components/ab5aac88-eb86-4d83-8107-090dabc16632/data?table=nice_enterprise`" />
     <div :style="{width: '400px', height: '798px', backgroundColor: '#1f2240', borderRadius: '4px', position: 'absolute', top: '30px', left: '40px'}">
-      <img :style="{width: '400px', height: '150px', position: 'absolute', top: '0px', left: '0px'}" src="/piduzxqy/images/Head-Bg01.png" />
+      <img :style="{width: '400px', height: '150px', position: 'absolute', top: '0px', left: '0px'}" src="/piduzxqy/images/map-head-bg.png" />
       <div :style="{color: '#d8d8d8', display: 'inline-flex', position: 'absolute', top: '57px', left: '15px'}">
         <icon name="icon-company" size="20px" />
       </div>
