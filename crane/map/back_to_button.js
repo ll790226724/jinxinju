@@ -5,5 +5,10 @@ module.exports = {
   props: {
     color: 'blue',
   },
+  events: {
+    'click': {
+      actions: ["$router.go(-1)"]
+    }
+  },
   content: '返回上一级'
 }

@@ -10,8 +10,8 @@
         </brick-tooltip>
       </template>
     </brick-input>
-    <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise${craneStates.mapCommunities}&minLng=${this.craneStates.mapBounds.southwest.lng}&maxLng=${this.craneStates.mapBounds.northeast.lng}&minLat=${this.craneStates.mapBounds.southwest.lat}&maxLat=${this.craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
-      <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds())]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [103.89682,30.793154], zoom: 17, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
+    <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=nice_enterprise${craneStates.mapCommunities}&minLng=${craneStates.mapBounds.southwest.lng}&maxLng=${craneStates.mapBounds.northeast.lng}&minLat=${craneStates.mapBounds.southwest.lat}&maxLat=${craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
+      <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds()), $refs.mapRef.setCenter(craneStates.streetLntlatsMap[routeParams.street])]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [103.89682,30.793154], zoom: 17, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
         <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" v-if="results" :markers="results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
         <info-window ref="infowindowRef" />
       </base-map>
@@ -78,7 +78,7 @@
         </template>
       </vis-multiple-select>
     </data-loader>
-    <brick-button ref="back-button" color="blue" :style="{position: 'absolute', top: '43px', left: '453px'}">
+    <brick-button ref="back-button" @click="()=>[$router.go(-1)]" color="blue" :style="{position: 'absolute', top: '43px', left: '453px'}">
       返回上一级
     </brick-button>
   </div>
@@ -139,6 +139,7 @@ export const map = {
         mapCommunities: '',
         colorMap: ['#007afe', '#dece84', '#8f919f', '#dc5f5f', '#f7b267', '#4fa8f1', '#2ec4b6', '#bed8d4', '#627592', '#5fd6dc', '#7d5fdc', '#7dcfef', '#2e81c4', '#979eda', '#4b4b4b', '#dc5f9a', '#7dcfef', '#f76767', '#c08185'],
         tableKeyMap: {companyname: '公司名字', industry: '所属行业', corporateterritory: '企业属地', unifiedsocialcreditcode: '统一社会信用代码', businessscope: '经营范围', mainproducts: '主要产品', legalrepresentative: '法人代表', contactnumber: '联系电话', eiaapprovalnumber: '环评批复（备案）', mainbusinessincome: '上一年度主营收入', inboundtax: '上一年度入库税金', productionaddress: '生产地址'},
+        streetLntlatsMap: {唐昌街道: [103.824336, 30.92366], 三道堰街道: [103.915939, 30.862178], 安德街道: [103.80584, 30.870687], 友爱街道: [103.795132, 30.823379], 团结街道: [103.978343, 30.816234], 郫筒街道: [103.887996, 30.807641], 红光街道: [103.945588, 30.784785], 犀浦街道: [103.972796, 30.753811], 川菜园区: [103.812872, 30.865116], 现代工业港: [103.92972, 30.802213], 德源街道: [103.853417, 30.774637], 安靖街道: [104.018228, 30.759085]},
       },
     }
   },
