@@ -1,6 +1,6 @@
 <template>
   <div class="map">
-    <brick-input ref="search-input" @input="(value)=>[setSearchValue(value)]" placeholder="请输入关键词" :value="craneStates.searchValue" :style="{width: '384px', height: '50px', backgroundColor: '#1f2440', position: 'absolute', top: '30px', left: '40px'}">
+    <brick-input ref="search-input" @input="(value)=>[setSearchValue(value)]" placeholder="请输入关键词" :value="craneStates.searchValue" :style="{width: '400px', height: '50px', backgroundColor: '#1f2440', position: 'absolute', top: '30px', left: '40px'}">
       <template ref="search-input-prefix-template" v-slot:head>
         <brick-icon ref="search-input-prefix-icon" name="search" color="rgba(255, 255, 255, 0.4)" />
       </template>
@@ -37,7 +37,7 @@
     </data-loader>
     <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: 'rgb(26, 29, 57)'}">
       <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=nice_enterprise&name=%${craneStates.company[0]}%`)" method="get" :data="{data: [[]]}">
-        <div v-if="response" :style="{position: 'relative', padding: '35px 16px 24px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', backgroundPosition: '100% 100%'}">
+        <div v-if="response" :style="{position: 'relative', padding: '35px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', backgroundPosition: '100% 100%'}">
           <div ref="company-name-container" v-if="response" :style="{display: 'flex', alignItems: 'center'}">
             <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/jingxinju/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
             <img ref="arrow-icon" @click="()=>[setState('companyShow', false)]" src="/jingxinju/images/Icon-Back.svg" :style="{width: '16px', cursor: 'pointer'}" v-else />
@@ -78,7 +78,7 @@
         </template>
       </vis-multiple-select>
     </data-loader>
-    <brick-button ref="back-button" @click="()=>[$router.go(-1)]" color="blue" :style="{position: 'absolute', top: '43px', left: '453px'}">
+    <brick-button ref="back-button" @click="()=>[$router.push('/areas')]" color="blue" :style="{position: 'absolute', top: '43px', left: '453px'}">
       返回上一级
     </brick-button>
   </div>

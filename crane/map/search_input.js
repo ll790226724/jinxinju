@@ -7,7 +7,7 @@ module.exports = [
       placeholder: '请输入关键词',
       $value: "craneStates.searchValue",
       $style: {
-        width: '384px',
+        width: '400px',
         height: '50px',
         backgroundColor: '#1f2440'
       },

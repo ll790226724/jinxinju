@@ -7,7 +7,7 @@ module.exports = {
   },
   events: {
     'click': {
-      actions: ["$router.go(-1)"]
+      actions: ["$router.push('areas')"]
     }
   },
   content: '返回上一级'

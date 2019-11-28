@@ -31,7 +31,7 @@ module.exports = {
             'v-if': "response",
             $style: {
               position: 'relative',
-              padding: '35px 16px 24px 16px',
+              padding: '35px 16px',
               backgroundImage: 'url(/jingxinju/images/map-head-bg.png)',
               backgroundPosition: '100% 100%'
             }
