@@ -4,7 +4,7 @@ module.exports = {
   route: {
     name: 'map',
   },
-  title: '企业地图',
+  title: '合规企业',
   states: [
     {
       id: 'searchValue',

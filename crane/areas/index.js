@@ -6,6 +6,7 @@ module.exports = {
   route: {
     name: 'areas',
   },
+  title: '合规企业',
   states: [
     {
       id: 'filterKey',
