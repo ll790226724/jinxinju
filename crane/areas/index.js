@@ -47,6 +47,14 @@ module.exports = {
         '仪器仪表制造业',
       ],
     },
+    {
+      id: 'markerStyle',
+      value: {strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: 130, textAlign: 'center'}
+    },
+    {
+      id: 'innerLabelStyle',
+      value: {color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}}
+    }
   ],
   components: [
     mapComponent,

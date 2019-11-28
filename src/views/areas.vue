@@ -3,7 +3,7 @@
     <div :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
       <base-map ref="baseMap" @map-created="()=>[getComponent('baseMap').setCenter([103.797642, 30.838752])]" features="none" :useMapUi="true" :mapOptions="{zoom: 12}">
         <regions :areas="craneStates.geojson" :areaStyle="{strokeColor: '#363856', strokeWeight: 2, fillOpacity: 0}" :areaHoverStyle="{fillOpacity: 0}" />
-        <marker-point ref="marker-point" v-for="area in craneStates.areas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" @marker-dbclicked="()=>[$router.push({ name: 'map', params: { street: area.id }})]" :marker="{id: area.id, label: [area.id, area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="{strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: 130, textAlign: 'center'}" :innerLabelStyle="{color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}}" />
+        <marker-point ref="marker-point" v-for="area in craneStates.areas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" @marker-dbclicked="()=>[$router.push({ name: 'map', params: { street: area.id }})]" :marker="{id: area.id, label: [area.id, area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="craneStates.markerStyle" :innerLabelStyle="craneStates.innerLabelStyle" />
       </base-map>
     </div>
     <data-loader @requestDone="(exports)=>[setState('areas', exports.results.map((item) => ({ id: item[0], count: item[1], location: craneStates.areasLocationMap[item[0]] })))]" url="/v1/components/ab5aac88-eb86-4d83-8107-090dabc16632/data?table=nice_enterprise" />
@@ -97,6 +97,8 @@ export const areas = {
         areas: [],
         currentArea: '',
         barChartIndustries: ['农副食品加工业', '食品制造业', '电气机械和器材制造业', '计算机、通信和其他电子设备制造业', '酒、饮料和精制茶制造业', '仪器仪表制造业'],
+        markerStyle: {strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: 130, textAlign: 'center'},
+        innerLabelStyle: {color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}},
       },
     }
   },
