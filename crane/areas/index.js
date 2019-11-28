@@ -54,7 +54,14 @@ module.exports = {
     {
       id: 'innerLabelStyle',
       value: {color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}}
-    }
+    },
+    {
+      id: 'routerMap',
+      value: {
+        staff: 'nice_enterprise',
+        slw: 'bad_enterprise',
+      }
+    },
   ],
   components: [
     mapComponent,

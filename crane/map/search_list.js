@@ -6,7 +6,7 @@ module.exports = {
     response: 'response',
   },
   props: {
-    $url: "`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=${routeParams.table}&name=%25${craneStates.searchValue}%25${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`",
+    $url: "`/v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=${craneStates.routerMap[routeParams.table]}&name=%25${craneStates.searchValue}%25${craneStates.mapCommunities}&page=${craneStates.page}&per_page=20`",
     method: 'get',
     $data: "{data: [['']], pageInfo: {total: 0}}",
   },

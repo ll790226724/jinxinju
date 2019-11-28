@@ -27,6 +27,13 @@ module.exports = {
       value: false
     },
     {
+      id: 'routerMap',
+      value: {
+        staff: 'nice_enterprise',
+        slw: 'bad_enterprise',
+      }
+    },
+    {
       id: 'mapBounds',
       value: {
         southwest: {
