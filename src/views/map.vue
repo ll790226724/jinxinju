@@ -20,7 +20,7 @@
       <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && response.data" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden', borderRadius: '4px'}">
         <div ref="search-list-container" v-if="response" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', overflow: 'scroll'}">
           <brick-list class="search-list">
-            <brick-list-optional-item ref="search-list-item" v-for="(item, index) in response.data" :key="index" @click="()=>[setState('company', item), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="{}" :index="index + 1">
+            <brick-list-optional-item ref="search-list-item" v-for="(item, index) in response.data" :key="index" @click="()=>[setState('company', {name: [item[0]], lnglat: item[3]}), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="{}" :index="index + 1">
               <span ref="search-list-item-name" :style="{display: 'inline-block', width: '325px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '16px', lineHeight: '24px'}">
                 {{item[0]}}
               </span>
@@ -35,8 +35,8 @@
         </div>
       </div>
     </data-loader>
-    <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: '#1f2440', borderRadius: '4px'}">
-      <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=${routeParams.table}&name=%${craneStates.company[0]}%`)" method="get" :data="{data: [[]]}">
+    <div ref="company-container" v-if="craneStates.companyShow" :style="{width: '400px', maxHeight: '970px', position: 'absolute', top: '84px', left: '40px', backgroundColor: '#1f2440', borderRadius: '4px', overflow: 'scroll',}">
+      <data-loader ref="company-data" v-slot="{ response: response }" :url="encodeURI(`v1/components/c35cf824-badf-422a-8b14-b285329b99a3/data?table=${routeParams.table}&name=%${craneStates.company.name}%`)" method="get" :data="{data: [[]]}">
         <div v-if="response" :style="{position: 'relative', padding: '35px 16px', backgroundImage: 'url(/jingxinju/images/map-head-bg.png)', borderRadius: '4px 4px 0 0'}">
           <div ref="company-name-container" v-if="response" :style="{display: 'flex', alignItems: 'center'}">
             <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/jingxinju/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
@@ -78,7 +78,7 @@
         </template>
       </vis-multiple-select>
     </data-loader>
-    <brick-button ref="back-button" @click="()=>[$router.push('/areas')]" color="blue" :style="{position: 'absolute', top: '43px', left: '453px'}">
+    <brick-button ref="back-button" @click="()=>[$router.push(`/${routeParams.table}/areas`)]" color="blue" :style="{position: 'absolute', top: '43px', left: '453px'}">
       返回上一级
     </brick-button>
   </div>
@@ -157,8 +157,8 @@ export const map = {
     },
     'craneStates.company': {
       handler (value) {
-        const content = `<div>${value[0]}</div>`
-        const location = value[3]
+        const content = `<div>${value.name}</div>`
+        const location = value.lnglat
         this.$refs.infowindowRef.createInfoWindow(content, location)
         this.$refs.mapRef.map.setCenter(location)
       },

@@ -57,7 +57,7 @@ module.exports = {
                   },
                   events: {
                     'click': {
-                      actions: ["setState('company', item)", "setState('companyShow', true)", "setState('companyCloseIconShow', false)"]
+                      actions: ["setState('company', {name: [item[0]], lnglat: item[3]})", "setState('companyShow', true)", "setState('companyCloseIconShow', false)"]
                     }
                   },
                   children: [
