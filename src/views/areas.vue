@@ -14,7 +14,7 @@
         <icon name="icon-company" size="20px" />
       </div>
       <data-loader v-slot="{ results: results }" :url="`/v1/components/1946f34d-a2b8-4f97-b956-4dc11dbfd083/data?table=${craneStates.routerMap[routeParams.table]}${craneStates.currentArea?'&area=\''+craneStates.currentArea+'\'':''}`" method="get" :data="[[0]]" :style="{position: 'absolute', top: '29px', left: '43px'}">
-        <digital-roll titlePosition="left" :content="{title: '合规企业总计', digital: getAttr(getAttr(results, '0'), '0'), suffix: '个'}" :titleStyle="{color: '#d8d8d8', fontSize: '18px', fontWeight: '500'}" :digitalStyle="{fontSize: '44px', color: '#dece83', fontFamily: 'Oswald-Regular', fontWeight: '400', letterSpacing: '1px'}" :suffixStyle="{color: '#d8d8d8', fontWeight: '500', fontSize: '18px', lineHeight: '1'}" />
+        <digital-roll titlePosition="left" :content="{title: `${craneStates.companyType}总计`, digital: getAttr(getAttr(results, '0'), '0'), suffix: '个'}" :titleStyle="{color: '#d8d8d8', fontSize: '18px', fontWeight: '500'}" :digitalStyle="{fontSize: '44px', color: '#dece83', fontFamily: 'Oswald-Regular', fontWeight: '400', letterSpacing: '1px'}" :suffixStyle="{color: '#d8d8d8', fontWeight: '500', fontSize: '18px', lineHeight: '1'}" />
       </data-loader>
       <div :style="{marginTop: '100px', position: 'relative', lineHeight: '49px', width: '400px', paddingLeft: '14px', borderTop: '1px solid rgba(255, 255, 255, .1)'}">
         <span :style="{color: '#8f919f', fontSize: '14px', lineHeight: '1', fontWeight: '500'}">
@@ -101,6 +101,7 @@ export const areas = {
         currentArea: '',
         barChartIndustries: ['农副食品加工业', '食品制造业', '电气机械和器材制造业', '计算机、通信和其他电子设备制造业', '酒、饮料和精制茶制造业', '仪器仪表制造业'],
         routerMap: {staff: 'nice_enterprise', slw: 'bad_enterprise'},
+        companyType: '合规企业',
       },
     }
   },
@@ -112,6 +113,15 @@ export const areas = {
     specialAreas () {
       return this.craneStates.areas.filter((item) => SpecialAreas.indexOf(item.id) > -1)
     }
+  },
+
+  created () {
+    if(this.routeParams.table === 'slw') {
+      this.craneStates.companyType = '脏污企业'
+    } else {
+      this.craneStates.companyType = '合规企业'
+    }
+    document.title = this.craneStates.companyType
   },
 }
 export default areas

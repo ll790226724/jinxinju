@@ -54,6 +54,10 @@ module.exports = {
         slw: 'bad_enterprise',
       }
     },
+    {
+      id: 'companyType',
+      value: '合规企业',
+    },
   ],
   components: [
     {

@@ -124,7 +124,11 @@ module.exports = {
         '德源街道': [103.853417,30.774637],
         '安靖街道': [104.018228,30.759085],
       }
-    }
+    },
+    {
+      id: 'companyType',
+      value: '合规企业',
+    },
   ],
   components: [
     ...mapPartial,

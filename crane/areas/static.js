@@ -60,7 +60,7 @@ module.exports = [
             props: {
               titlePosition: 'left',
               $content: {
-                title: '合规企业总计',
+                $title: "`${craneStates.companyType}总计`",
                 $digital: "getAttr(getAttr(results, '0'), '0')",
                 suffix: '个',
               },
