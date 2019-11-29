@@ -45,7 +45,7 @@
         <vertical-bar :data="results.map((item) => ({key: item[0], ['数量']: item[1]}))" labelKey="key" valueKey="数量" :crossAxis="{range: {count: 6}, lineStyle: {stroke: 'transparent'}, labelStyle: {size: 12, fill: '#fff'}, unit: '个'}" :series="[['#007afe', '#007afe33']]" :mainAxis="{labelStyle: {rotate: -45, size: 12, fill: '#fff'}, labelLength: 9, lineStyle: {stroke: 'transparent'}}" :theme="{background: 'transparent'}" :labels="[{ fill: '#fff', stroke: '#fff', size: 12}]" :tooltipOptions="{background: 'rgba(60, 71, 89, .9)', text: {size: 14, fill: '#ffffff'}, title: {fill: '#fff'}}" />
       </data-loader>
     </div>
-    <data-loader v-slot="{ results: results, response: response }" :url="`/v1/components/5d4574bf-fb0f-47fe-87e9-c33680aecaf0/data?table=nice_enterprise`" :style="{width: '400px', height: '217px', borderRadius: '4px', overflow: 'hidden', position: 'absolute', top: '841px', left: '40px'}" :data="[[0]]">
+    <data-loader v-slot="{ results: results, response: response }" url="/v1/components/5d4574bf-fb0f-47fe-87e9-c33680aecaf0/data?table=nice_enterprise" :style="{width: '400px', height: '217px', borderRadius: '4px', overflow: 'hidden', position: 'absolute', top: '841px', left: '40px'}" :data="[[0]]">
       <donut :data="results[0].map((item, index) => ({ key: craneStates.categoryMap[response.schema[index].field], value: item }))" label-key="key" value-key="value" :innerRadius="0.655" :theme="{background: '#1f2240', colors: ['#007afe', '#dece84', '#8f919f']}" :guide="{text: '企业类型占比', stroke: '#ffffff', size: 12, align: 'center'}" :tooltipOptions="{background: 'rgba(60, 71, 89, .9)', text: {size: 14, fill: '#ffffff'}}" v-if="response" />
     </data-loader>
   </div>

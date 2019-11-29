@@ -1,4 +1,5 @@
 const mapPage = require('./crane/map')
+const AreasPage = require('./crane/areas/index')
 const citizenPage = require('./crane/citizen/index')
 
 module.exports = {
@@ -51,6 +52,7 @@ module.exports = {
   // 页面
   pages: [
     mapPage,
+    AreasPage,
     citizenPage,
   ],
 }

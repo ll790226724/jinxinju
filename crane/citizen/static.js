@@ -1,4 +1,4 @@
-const { digitalStyle, donutComponent } = require('../share')
+const { digitalStyle } = require('../share')
 
 module.exports = [
   {
@@ -260,5 +260,4 @@ module.exports = [
       },
     ],
   },
-  donutComponent,
 ]

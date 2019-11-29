@@ -1,4 +1,4 @@
-const { digitalStyle, donutComponent } = require('../share')
+const { digitalStyle } = require('../share')
 
 module.exports = [
   {
@@ -212,9 +212,9 @@ module.exports = [
           {
             component: '@byzanteam/graphite/vertical-bar',
             props: {
-              $data: "results.map((item) => ({key: item[0], value: item[1]}))",
+              $data: "results.map((item) => ({key: item[0], ['数量']: item[1]}))",
               labelKey: 'key',
-              valueKey: 'value',
+              valueKey: '数量',
               $crossAxis: {
                 $range: {
                   $count: 6,
@@ -224,7 +224,7 @@ module.exports = [
                 },
                 $labelStyle: {
                   $size: 12,
-                  color: '#fff',
+                  fill: '#fff',
                 },
                 unit: '个',
               },
@@ -233,7 +233,7 @@ module.exports = [
                 $labelStyle: {
                   $rotate: -45,
                   $size: 12,
-                  color: '#fff',
+                  fill: '#fff',
                 },
                 $labelLength: 9,
                 $lineStyle: {
@@ -260,5 +260,4 @@ module.exports = [
       },
     ],
   },
-  donutComponent,
 ]

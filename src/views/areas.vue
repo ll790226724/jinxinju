@@ -42,7 +42,7 @@
         </vis-table>
       </data-loader>
       <data-loader v-slot="{ results: results }" :data="[]" :url="`/v1/components/1aebcfcb-3de4-4259-b880-fbd9a7da7a4f/data?table=${craneStates.routerMap[routeParams.table]}&industry='${craneStates.barChartIndustries.join('\',\'')}'${craneStates.currentArea?'&area=\''+craneStates.currentArea+'\'':''}`" :style="{width: '400px', height: '280px', position: 'absolute', top: '512px', left: '0px'}">
-        <vertical-bar :data="results.map((item) => ({key: item[0], value: item[1]}))" labelKey="key" valueKey="value" :crossAxis="{range: {count: 6}, lineStyle: {stroke: 'transparent'}, labelStyle: {size: 12, color: '#fff'}, unit: '个'}" :series="[['#007afe', '#007afe33']]" :mainAxis="{labelStyle: {rotate: -45, size: 12, color: '#fff'}, labelLength: 9, lineStyle: {stroke: 'transparent'}}" :theme="{background: 'transparent'}" :labels="[{ fill: '#fff', stroke: '#fff', size: 12}]" :tooltipOptions="{background: 'rgba(60, 71, 89, .9)', text: {size: 14, fill: '#ffffff'}, title: {fill: '#fff'}}" />
+        <vertical-bar :data="results.map((item) => ({key: item[0], ['数量']: item[1]}))" labelKey="key" valueKey="数量" :crossAxis="{range: {count: 6}, lineStyle: {stroke: 'transparent'}, labelStyle: {size: 12, fill: '#fff'}, unit: '个'}" :series="[['#007afe', '#007afe33']]" :mainAxis="{labelStyle: {rotate: -45, size: 12, fill: '#fff'}, labelLength: 9, lineStyle: {stroke: 'transparent'}}" :theme="{background: 'transparent'}" :labels="[{ fill: '#fff', stroke: '#fff', size: 12}]" :tooltipOptions="{background: 'rgba(60, 71, 89, .9)', text: {size: 14, fill: '#ffffff'}, title: {fill: '#fff'}}" />
       </data-loader>
     </div>
     <data-loader v-slot="{ results: results, response: response }" :url="`/v1/components/5d4574bf-fb0f-47fe-87e9-c33680aecaf0/data?table=${craneStates.routerMap[routeParams.table]}`" :style="{width: '400px', height: '217px', borderRadius: '4px', overflow: 'hidden', position: 'absolute', top: '841px', left: '40px'}" :data="[[0]]">
@@ -71,6 +71,8 @@ import {
   Donut,
 } from '@byzanteam/graphite'
 
+const SpecialAreas = ['川菜园区', '现代工业港']
+
 export const areas = {
   mixins: [BuiltInMixin],
 
@@ -98,10 +100,17 @@ export const areas = {
         areas: [],
         currentArea: '',
         barChartIndustries: ['农副食品加工业', '食品制造业', '电气机械和器材制造业', '计算机、通信和其他电子设备制造业', '酒、饮料和精制茶制造业', '仪器仪表制造业'],
-        markerStyle: {strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: 130, textAlign: 'center'},
-        innerLabelStyle: {color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}},
         routerMap: {staff: 'nice_enterprise', slw: 'bad_enterprise'},
       },
+    }
+  },
+
+  computed: {
+    normalAreas () {
+      return this.craneStates.areas.filter((item) => SpecialAreas.indexOf(item.id) < 0)
+    },
+    specialAreas () {
+      return this.craneStates.areas.filter((item) => SpecialAreas.indexOf(item.id) > -1)
     }
   },
 }
