@@ -58,6 +58,42 @@ module.exports = {
       id: 'companyType',
       value: '合规企业',
     },
+    {
+      id: 'markerStyle',
+      value:   {
+        strokeColor: 'rgba(0, 122, 254, .6)',
+        strokeWeight: 1,
+        color: 'rgba(0, 122, 254, .06)',
+        size: 130,
+        textAlign: 'center',
+      },
+    },
+    {
+      id: 'innerLabelStyle',
+      value: {
+        color: 'rgba(255, 255, 255, 0.8)',
+        textStyleMap: [{fontSize: 16},{fontSize: 14}],
+        offset: {0: '0', 1: '45'},
+      },
+    },
+    {
+      id: 'selectedMarkerStyle',
+      value: {
+        strokeColor: 'rgb(0, 122, 254)',
+        strokeWeight: 1,
+        color: 'rgba(0, 122, 254, .12)',
+        size: 130,
+        textAlign: 'center',
+      },
+    },
+    {
+      id: 'selectedInnerLabelStyle',
+      value: {
+        color: 'white',
+        textStyleMap: [{fontSize: 16},{fontSize: 14}],
+        offset: {0: '0', 1: '45'},
+      }
+    }
   ],
   components: [
     {
@@ -124,18 +160,8 @@ module.exports = {
                   $location: 'area.location',
                 },
                 icon: 'circle-o',
-                $markerStyle: {
-                  strokeColor: 'rgb(0, 122, 254)',
-                  $strokeWeight: '1',
-                  color: 'rgba(0, 122, 254, .12)',
-                  $size: 130,
-                  textAlign: 'center',
-                },
-                $innerLabelStyle: {
-                  color: 'white',
-                  $textStyleMap: "[{fontSize: 16}, {fontSize: 14}]",
-                  offset: [0, 45],
-                },
+                $markerStyle: "area.markerStyle",
+                $innerLabelStyle: "area.innerLabelStyle",
               },
             },
             {

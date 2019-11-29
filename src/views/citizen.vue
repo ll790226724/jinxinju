@@ -3,7 +3,7 @@
     <div :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
       <base-map ref="baseMap" @map-created="()=>[getComponent('baseMap').setCenter([103.797642, 30.838752])]" features="none" :useMapUi="true" :mapOptions="{zoom: 12}">
         <regions :areas="craneStates.geojson" :areaStyle="{strokeColor: '#363856', strokeWeight: 2, fillOpacity: 0}" :areaHoverStyle="{fillOpacity: 0}" />
-        <marker-point ref="marker-point" v-for="area in normalAreas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" :marker="{id: area.id, label: [area.id, '共有企业:' + area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="{strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: 130, textAlign: 'center'}" :innerLabelStyle="{color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}}" />
+        <marker-point ref="marker-point" v-for="area in normalAreas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" :marker="{id: area.id, label: [area.id, '共有企业:' + area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="area.markerStyle" :innerLabelStyle="area.innerLabelStyle" />
         <marker-point ref="marker-point" v-for="area in specialAreas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" :marker="{id: area.id, label: [area.id], location: area.location}" icon="circle-o" :markerStyle="{strokeColor: 'rgb(0, 122, 254, .12)', strokeWeight: 1, color: 'rgb(0, 122, 254)', size: 14, textAlign: 'center'}" :innerLabelStyle="{color: '#367eef', textStyleMap: [{fontSize: 16}], offset: [-8*area.id.length+4, 30]}" />
       </base-map>
     </div>
@@ -100,13 +100,27 @@ export const citizen = {
         areas: [],
         currentArea: '',
         barChartIndustries: ['农副食品加工业', '食品制造业', '电气机械和器材制造业', '计算机、通信和其他电子设备制造业', '酒、饮料和精制茶制造业', '仪器仪表制造业'],
+        markerStyle: {strokeColor: 'rgba(0, 122, 254, .6)', strokeWeight: 1, color: 'rgba(0, 122, 254, .06)', size: 130, textAlign: 'center'},
+        innerLabelStyle: {color: 'rgba(255, 255, 255, 0.8)', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}},
+        selectedMarkerStyle: {strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: 130, textAlign: 'center'},
+        selectedInnerLabelStyle: {color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}},
       },
     }
   },
 
   computed: {
     normalAreas () {
-      return this.craneStates.areas.filter((item) => SpecialAreas.indexOf(item.id) < 0)
+      const filteredAreas = this.craneStates.areas.filter((item) => SpecialAreas.indexOf(item.id) < 0)
+      return filteredAreas.map((area) => {
+        if(this.craneStates.currentArea === area.id) {
+          area.markerStyle =  this.craneStates.selectedMarkerStyle
+          area.innerLabelStyle = this.craneStates.selectedInnerLabelStyle
+        } else {
+          area.markerStyle = this.craneStates.markerStyle
+          area.innerLabelStyle = this.craneStates.innerLabelStyle
+        }
+        return area
+      })
     },
     specialAreas () {
       return this.craneStates.areas.filter((item) => SpecialAreas.indexOf(item.id) > -1)
