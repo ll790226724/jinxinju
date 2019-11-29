@@ -1,6 +1,6 @@
 const mapPage = require('./crane/map')
-const AreasPage = require('./crane/areas/index')
 const citizenPage = require('./crane/citizen/index')
+const AreasPage = require('./crane/areas/index')
 
 module.exports = {
   // i18n 配置
@@ -52,7 +52,7 @@ module.exports = {
   // 页面
   pages: [
     mapPage,
-    AreasPage,
     citizenPage,
+    AreasPage,
   ],
 }

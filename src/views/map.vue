@@ -78,7 +78,7 @@
         </template>
       </vis-multiple-select>
     </data-loader>
-    <brick-button ref="back-button" @click="()=>[$router.push(`/${routeParams.table}/areas`)]" color="blue" :style="{position: 'absolute', top: '43px', left: '453px'}">
+    <brick-button ref="back-button" @click="()=>[$router.push(`/${routeParams.table}`)]" color="blue" :style="{position: 'absolute', top: '43px', left: '453px'}">
       返回上一级
     </brick-button>
   </div>
@@ -179,7 +179,7 @@ export const map = {
 
   created () {
     if(this.routeParams.table === 'slw') {
-      this.craneStates.companyType = '脏污企业'
+      this.craneStates.companyType = '散乱污企业'
     } else {
       this.craneStates.companyType = '合规企业'
     }

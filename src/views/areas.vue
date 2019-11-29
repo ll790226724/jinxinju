@@ -131,7 +131,7 @@ export const areas = {
 
   created () {
     if(this.routeParams.table === 'slw') {
-      this.craneStates.companyType = '脏污企业'
+      this.craneStates.companyType = '散乱污企业'
     } else {
       this.craneStates.companyType = '合规企业'
     }
