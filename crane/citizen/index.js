@@ -15,7 +15,7 @@ module.exports = {
       value: {
         type1: '川菜园区',
         type2: '现代工业港',
-        other: '其他',
+        other: '园外企业',
       },
     },
     {
