@@ -4,7 +4,7 @@ const { pidugeojson, areasLocationMap } = require('../geojson')
 module.exports = {
   route: {
     name: 'areas',
-    path: ':table/areas'
+    path: ':table'
   },
   title: '合规企业',
   states: [

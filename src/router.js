@@ -6,7 +6,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  base: '/',
+  base: '/piduzxqy/',
   routes: [
     {
       name: 'map',
@@ -15,7 +15,7 @@ export default new Router({
     },
     {
       name: 'areas',
-      path: '/:table/areas',
+      path: '/:table',
       component: pages.areas,
     },
     {
