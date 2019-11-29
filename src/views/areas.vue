@@ -1,7 +1,7 @@
 <template>
   <div class="areas">
     <div :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
-      <base-map ref="baseMap" @map-created="()=>[getComponent('baseMap').setCenter([103.797642, 30.838752])]" features="none" :useMapUi="true" :mapOptions="{zoom: 12}">
+      <base-map ref="baseMap" @map-created="()=>[getComponent('baseMap').setCenter([103.797642, 30.838752])]" features="none" :useMapUi="true" :mapOptions="{zoom: 12, zoomEnable: false}">
         <regions :areas="craneStates.geojson" :areaStyle="{strokeColor: '#363856', strokeWeight: 2, fillOpacity: 0}" :areaHoverStyle="{fillOpacity: 0}" />
         <marker-point ref="marker-point" v-for="area in normalAreas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" @marker-dbclicked="()=>[$router.push({ name: 'map', params: { street: area.id }})]" :marker="{id: area.id, label: [area.id, '共有企业:' + area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="area.markerStyle" :innerLabelStyle="area.innerLabelStyle" />
         <marker-point ref="marker-point" v-for="area in specialAreas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" @marker-dbclicked="()=>[$router.push({ name: 'map', params: { street: area.id }})]" :marker="{id: area.id, label: [area.id], location: area.location}" icon="circle-o" :markerStyle="{strokeColor: 'rgb(0, 122, 254, .12)', strokeWeight: 1, color: 'rgb(0, 122, 254)', size: 14, textAlign: 'center'}" :innerLabelStyle="{color: '#367eef', textStyleMap: [{fontSize: 16}], offset: [-8*area.id.length+4, 30]}" />

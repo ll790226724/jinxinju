@@ -101,6 +101,7 @@ module.exports = {
             $useMapUi: 'true',
             $mapOptions: {
               $zoom: 12,
+              $zoomEnable: false,
             },
           },
           events: {
