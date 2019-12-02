@@ -1,6 +1,6 @@
 <template>
   <div class="citizen">
-    <div :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
+    <div :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
       <base-map ref="baseMap" @map-created="()=>[getComponent('baseMap').setCenter([103.797642, 30.838752])]" features="none" :useMapUi="true" :mapOptions="{zoom: 12, zoomEnable: false}">
         <regions :areas="craneStates.geojson" :areaStyle="{strokeColor: '#363856', strokeWeight: 2, fillOpacity: 0}" :areaHoverStyle="{fillOpacity: 0}" />
         <marker-point ref="marker-point" v-for="area in normalAreas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" :marker="{id: area.id, label: [area.id, '共有企业:' + area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="area.markerStyle" :innerLabelStyle="area.innerLabelStyle" />
@@ -125,6 +125,13 @@ export const citizen = {
     specialAreas () {
       return this.craneStates.areas.filter((item) => SpecialAreas.indexOf(item.id) > -1)
     }
+  },
+
+  methods: {
+    getMapScale () {
+      const scaleValue = document.body.style.transform.match(/(?<=\().*?(?=\))/)[0]
+      return `scale(${1/scaleValue})`
+    },
   },
 }
 export default citizen

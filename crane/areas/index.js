@@ -103,6 +103,7 @@ module.exports = {
         $style: {
           width: '100%',
           height: '100%',
+          $transform: 'getMapScale()',
         },
       },
       children: [
