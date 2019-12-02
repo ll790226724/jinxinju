@@ -51,7 +51,7 @@ module.exports = {
         strokeColor: 'rgba(0, 122, 254, .6)',
         strokeWeight: 1,
         color: 'rgba(0, 122, 254, .06)',
-        size: 130,
+        size: 'getMapScale() > 4 ? Math.round(130 / getMapScale()) : 130',
         textAlign: 'center',
       },
     },
@@ -59,7 +59,7 @@ module.exports = {
       id: 'innerLabelStyle',
       value: {
         color: 'rgba(255, 255, 255, 0.8)',
-        textStyleMap: [{fontSize: 16},{fontSize: 14}],
+        textStyleMap: [{fontSize: 'getMapScale() > 4 ? Math.round(16 / getMapScale()) : 16'},{fontSize: 'getMapScale() > 4 ? Math.round(14 / getMapScale()) : 14'}],
         offset: {0: '0', 1: '45'},
       },
     },
@@ -69,7 +69,7 @@ module.exports = {
         strokeColor: 'rgb(0, 122, 254)',
         strokeWeight: 1,
         color: 'rgba(0, 122, 254, .12)',
-        size: 130,
+        $size: 'getMapScale() > 4 ? Math.round(130 / getMapScale()) : 130',
         textAlign: 'center',
       },
     },
@@ -77,7 +77,7 @@ module.exports = {
       id: 'selectedInnerLabelStyle',
       value: {
         color: 'white',
-        textStyleMap: [{fontSize: 16},{fontSize: 14}],
+        textStyleMap: [{fontSize: 'getMapScale() > 4 ? Math.round(16 / getMapScale()) : 16'},{fontSize: 'getMapScale() > 4 ? Math.round(14 / getMapScale()) : 14'}],
         offset: {0: '0', 1: '45'},
       }
     }
@@ -90,7 +90,7 @@ module.exports = {
         $style: {
           width: '100%',
           height: '100%',
-          $transform: 'getMapScale()',
+          $transform: "`scale(${getMapScale()})`",
         },
       },
       children: [
@@ -101,7 +101,7 @@ module.exports = {
             features: 'none',
             $useMapUi: 'true',
             $mapOptions: {
-              $zoom: 12,
+              $zoom: 'getMapScale() > 4 ? 10: 12',
               $zoomEnable: false,
             },
           },
@@ -175,12 +175,12 @@ module.exports = {
                   strokeColor: 'rgb(0, 122, 254, .12)',
                   $strokeWeight: 1,
                   color: 'rgb(0, 122, 254)',
-                  $size: 14,
+                  $size: 'getMapScale() > 4 ? Math.round(14 / getMapScale()) : 14',
                   textAlign: 'center',
                 },
                 $innerLabelStyle: {
                   color: '#367eef',
-                  $textStyleMap: "[{fontSize: 16}]",
+                  $textStyleMap: "[{fontSize: getMapScale() > 4 ? Math.round(16 / getMapScale()) : 16}]",
                   $offset: "[-8*area.id.length+4, 30]",
                 },
               },

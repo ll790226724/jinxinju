@@ -1,10 +1,10 @@
 <template>
   <div class="citizen">
-    <div :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
-      <base-map ref="baseMap" @map-created="()=>[getComponent('baseMap').setCenter([103.797642, 30.838752])]" features="none" :useMapUi="true" :mapOptions="{zoom: 12, zoomEnable: false}">
+    <div :style="{width: '100%', height: '100%', transform: `scale(${getMapScale()})`, position: 'absolute', top: '0px', left: '0px'}">
+      <base-map ref="baseMap" @map-created="()=>[getComponent('baseMap').setCenter([103.797642, 30.838752])]" features="none" :useMapUi="true" :mapOptions="{zoom: getMapScale() > 4 ? 10: 12, zoomEnable: false}">
         <regions :areas="craneStates.geojson" :areaStyle="{strokeColor: '#363856', strokeWeight: 2, fillOpacity: 0}" :areaHoverStyle="{fillOpacity: 0}" />
         <marker-point ref="marker-point" v-for="area in normalAreas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" :marker="{id: area.id, label: [area.id, '共有企业:' + area.count + '个'], location: area.location}" icon="circle-o" :markerStyle="area.markerStyle" :innerLabelStyle="area.innerLabelStyle" />
-        <marker-point ref="marker-point" v-for="area in specialAreas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" :marker="{id: area.id, label: [area.id], location: area.location}" icon="circle-o" :markerStyle="{strokeColor: 'rgb(0, 122, 254, .12)', strokeWeight: 1, color: 'rgb(0, 122, 254)', size: 14, textAlign: 'center'}" :innerLabelStyle="{color: '#367eef', textStyleMap: [{fontSize: 16}], offset: [-8*area.id.length+4, 30]}" />
+        <marker-point ref="marker-point" v-for="area in specialAreas" :key="area.id" @marker-clicked="()=>[setState('currentArea', area.id === craneStates.currentArea ? '' : area.id)]" :marker="{id: area.id, label: [area.id], location: area.location}" icon="circle-o" :markerStyle="{strokeColor: 'rgb(0, 122, 254, .12)', strokeWeight: 1, color: 'rgb(0, 122, 254)', size: getMapScale() > 4 ? Math.round(14 / getMapScale()) : 14, textAlign: 'center'}" :innerLabelStyle="{color: '#367eef', textStyleMap: [{fontSize: getMapScale() > 4 ? Math.round(16 / getMapScale()) : 16}], offset: [-8*area.id.length+4, 30]}" />
       </base-map>
     </div>
     <data-loader @requestDone="(exports)=>[setState('areas', exports.results.map((item) => ({ id: item[0], count: item[1], location: craneStates.areasLocationMap[item[0]] })))]" :url="`/v1/components/ab5aac88-eb86-4d83-8107-090dabc16632/data?table=nice_enterprise`" />
@@ -100,10 +100,10 @@ export const citizen = {
         areas: [],
         currentArea: '',
         barChartIndustries: ['农副食品加工业', '食品制造业', '电气机械和器材制造业', '计算机、通信和其他电子设备制造业', '酒、饮料和精制茶制造业', '仪器仪表制造业'],
-        markerStyle: {strokeColor: 'rgba(0, 122, 254, .6)', strokeWeight: 1, color: 'rgba(0, 122, 254, .06)', size: 130, textAlign: 'center'},
-        innerLabelStyle: {color: 'rgba(255, 255, 255, 0.8)', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}},
-        selectedMarkerStyle: {strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: 130, textAlign: 'center'},
-        selectedInnerLabelStyle: {color: 'white', textStyleMap: [{fontSize: 16}, {fontSize: 14}], offset: {0: '0', 1: '45'}},
+        markerStyle: {strokeColor: 'rgba(0, 122, 254, .6)', strokeWeight: 1, color: 'rgba(0, 122, 254, .06)', size: this.getMapScale() > 4 ? Math.round(130 / this.getMapScale()) : 130, textAlign: 'center'},
+        innerLabelStyle: {color: 'rgba(255, 255, 255, 0.8)', textStyleMap: [{fontSize: this.getMapScale() > 4 ? Math.round(16 / this.getMapScale()) : 16}, {fontSize: this.getMapScale() > 4 ? Math.round(14 / this.getMapScale()) : 14}], offset: {0: '0', 1: '45'}},
+        selectedMarkerStyle: {strokeColor: 'rgb(0, 122, 254)', strokeWeight: 1, color: 'rgba(0, 122, 254, .12)', size: this.getMapScale() > 4 ? Math.round(130 / this.getMapScale()) : 130, textAlign: 'center'},
+        selectedInnerLabelStyle: {color: 'white', textStyleMap: [{fontSize: this.getMapScale() > 4 ? Math.round(16 / this.getMapScale()) : 16}, {fontSize: this.getMapScale() > 4 ? Math.round(14 / this.getMapScale()) : 14}], offset: {0: '0', 1: '45'}},
       },
     }
   },
@@ -130,7 +130,7 @@ export const citizen = {
   methods: {
     getMapScale () {
       const scaleValue = document.body.style.transform.match(/(?<=\().*?(?=\))/)[0]
-      return `scale(${1/scaleValue})`
+      return 1/scaleValue
     },
   },
 }
