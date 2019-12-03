@@ -199,7 +199,7 @@ export const map = {
       this.setState('searchValue', value)
     }, 300),
     getMapScale () {
-      const scaleValue = document.body.style.transform.match(/(?<=\().*?(?=\))/)[0]
+      const scaleValue = document.body.style.transform.match(/scale\(([\.\d]+)\)/)[1]
       return `scale(${1/scaleValue})`
     },
     markerMouseoverFunc (marker) {

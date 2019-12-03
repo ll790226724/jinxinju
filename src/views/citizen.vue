@@ -129,7 +129,7 @@ export const citizen = {
 
   methods: {
     getMapScale () {
-      const scaleValue = document.body.style.transform.match(/(?<=\().*?(?=\))/)[0]
+      const scaleValue = document.body.style.transform.match(/scale\(([\.\d]+)\)/)[1]
       return 1/scaleValue
     },
   },
