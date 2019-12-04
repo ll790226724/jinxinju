@@ -57,14 +57,14 @@ module.exports = {
                   },
                   events: {
                     'click': {
-                      actions: ["setState('company', {name: [item[0]], lnglat: item[3]})", "setState('companyShow', true)", "setState('companyCloseIconShow', false)"]
+                      actions: ["setState('company', {name: [item[1]], lnglat: item[17]})", "setState('companyShow', true)", "setState('companyCloseIconShow', false)"]
                     }
                   },
                   children: [
                     {
                       id: 'search-list-item-name',
                       component: 'span',
-                      content: '{{item[0]}}',
+                      content: '{{item[1]}}',
                       props:{
                         $style: {
                           display: 'inline-block',
@@ -84,7 +84,7 @@ module.exports = {
                       children: [
                         {
                           component: 'span',
-                          content: '{{item[1]}}',
+                          content: '{{item[2]}}',
                           props:{
                             $style: {
                               display: 'inline-block',
