@@ -89,7 +89,7 @@ module.exports = {
                 {
                   id: 'arrow-icon-text',
                   component: 'span',
-                  content: "{{ response.data[0][0] }}",
+                  content: "{{ response.data[0][1] }}",
                   props: {
                     $style: {
                       color: '#fff',
