@@ -1,7 +1,17 @@
 * {
   box-sizing: border-box;
 }
+.selectedCluster {
+    border-width: 10px !important;
+    margin-left: -8px !important;
+    margin-top: -8px !important;
+}
 
+.normalCluster {
+    border-width: 2px !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+}
 .select-trigger {
   line-height: 2.05rem !important;
 }
