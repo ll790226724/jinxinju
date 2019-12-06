@@ -12,6 +12,26 @@
     margin-right: 0 !important;
     margin-top: 0 !important;
 }
+
+.info-list {
+    width: 200px;
+    max-height: 340px;
+    overflow: scroll;
+}
+
+.info-list-item:hover {
+    color: #007afe !important;
+}
+
+.info-list-item {
+    padding: 7px 0;
+    cursor: pointer;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 .select-trigger {
   line-height: 2.05rem !important;
 }
