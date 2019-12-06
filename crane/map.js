@@ -57,7 +57,13 @@ module.exports = {
     },
     {
       id: 'markerValueMap',
-      value: {}
+      value: {
+        '行业': {
+          clusterContent: {},
+          markerContent: {},
+          labelStyle: {}
+        }
+      }
     },
     {
       id: 'markerStyles',
