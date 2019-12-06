@@ -10,9 +10,9 @@
         </brick-tooltip>
       </template>
     </brick-input>
-    <data-loader ref="map-component" v-slot="{ results: results }" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=${craneStates.routerMap[routeParams.table]}${craneStates.mapCommunities}&minLng=${craneStates.mapBounds.southwest.lng}&maxLng=${craneStates.mapBounds.northeast.lng}&minLat=${craneStates.mapBounds.southwest.lat}&maxLat=${craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
-      <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds()), $refs.mapRef.setCenter(craneStates.streetLntlatsMap[routeParams.street])]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" :mapOptions="{center: [103.89682,30.793154], zoom: 17, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
-        <mass-marker ref="markers" @mass-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @mass-mouseout="(marker)=>[markerMouseoutFunc(marker)]" @mass-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.data), setState('companyCloseIconShow', true)]" v-if="results" :markers="results.map((result) => {return {name: result[0], type: result[1], lnglat: result[2], style: craneStates.markerValueMap[result[1]]}})" :styles="craneStates.markerStyles" :options="{opacity: 1}" />
+    <data-loader ref="map-component" v-slot="{ results: results }" @requestDone="()=>[setState('markersData', getComponent('map-component').results)]" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=${craneStates.routerMap[routeParams.table]}${craneStates.mapCommunities}&minLng=${craneStates.mapBounds.southwest.lng}&maxLng=${craneStates.mapBounds.northeast.lng}&minLat=${craneStates.mapBounds.southwest.lat}&maxLat=${craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
+      <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds()), $refs.mapRef.setCenter(craneStates.streetLntlatsMap[routeParams.street])]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" @map-click="(bounds)=>[Object.keys(craneStates.currentClusterContext).length !== 0 ? craneStates.currentClusterContext.setContent(craneStates.currentClusterContext.getContent().replace(/selectedCluster/, 'normalCluster')) : '', getComponent('mapRef').map.setStatus({zoomEnable: true, dragEnable: true,})]" :mapOptions="{center: [103.89682,30.793154], zoom: 17, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
+        <cluster ref="clusterRef" v-for="(item, key) in markerGroup" :key="key" @marker-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @marker-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.target.getExtData()), setState('companyCloseIconShow', true)]" @clusterClick="(cluster)=>[clusterClickFunc(cluster)]" :clusterContent="craneStates.markerValueMap[key].clusterContent" :points="item" :markerContent="craneStates.markerValueMap[key].markerContent" :options="{zoomOnClick: false}" />
         <info-window ref="infowindowRef" />
       </base-map>
     </data-loader>
@@ -20,13 +20,13 @@
       <div ref="search-list-container" v-show="craneStates.searchValue && !craneStates.companyShow && response.data" :style="{padding: '10px 0', backgroundColor: '#1f2440', maxHeight: '970px', overflow: 'hidden', borderRadius: '4px'}">
         <div ref="search-list-container" v-if="response" :style="{width: '400px', maxHeight: '950px', backgroundColor: '#1f2440', overflow: 'scroll'}">
           <brick-list class="search-list">
-            <brick-list-optional-item ref="search-list-item" v-for="(item, index) in response.data" :key="index" @click="()=>[setState('company', {name: [item[0]], lnglat: item[3]}), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="{}" :index="index + 1">
+            <brick-list-optional-item ref="search-list-item" v-for="(item, index) in response.data" :key="index" @click="()=>[setState('company', {name: [item[1]], lnglat: item[17]}), setState('companyShow', true), setState('companyCloseIconShow', false)]" :item="{}" :index="index + 1">
               <span ref="search-list-item-name" :style="{display: 'inline-block', width: '325px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '16px', lineHeight: '24px'}">
-                {{item[0]}}
+                {{item[1]}}
               </span>
               <template ref="search-list-item-description-template" v-slot:description>
                 <span :style="{display: 'inline-block', width: '325px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '14px', lineHeight: '21px'}">
-                  {{item[1]}}
+                  {{item[2]}}
                 </span>
               </template>
             </brick-list-optional-item>
@@ -42,7 +42,7 @@
             <img ref="close-icon" @click="()=>[setState('companyShow', false)]" v-if="craneStates.companyCloseIconShow" src="/piduzxqy/images/Icon-Close.svg" :style="{width: '16px', cursor: 'pointer'}" />
             <img ref="arrow-icon" @click="()=>[setState('companyShow', false)]" src="/piduzxqy/images/Icon-Back.svg" :style="{width: '16px', cursor: 'pointer'}" v-else />
             <span ref="arrow-icon-text" :style="{color: '#fff', fontSize: '18px', fontWeight: '600', marginLeft: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}">
-              {{ response.data[0][0] }}
+              {{ response.data[0][1] }}
             </span>
           </div>
         </div>
@@ -101,7 +101,7 @@ import {
 } from '@byzanteam/brick'
 import {
   BaseMap,
-  MassMarker,
+  Cluster,
   InfoWindow,
 } from '@byzanteam/map-ui'
 
@@ -119,7 +119,7 @@ export const map = {
     BrickButton,
     BrickTooltip,
     BaseMap,
-    MassMarker,
+    Cluster,
     InfoWindow,
   },
 
@@ -135,21 +135,56 @@ export const map = {
         mapBounds: {southwest: {lat: 0, lng: 0}, northeast: {lat: 0, lng: 0}},
         communities: [],
         companyCloseIconShow: false,
-        markerValueMap: {},
+        markerValueMap: {行业: {clusterContent: {}, markerContent: {}, labelStyle: {}}},
         markerStyles: [],
         mapCommunities: '',
         colorMap: ['#007afe', '#dece84', '#8f919f', '#dc5f5f', '#f7b267', '#4fa8f1', '#2ec4b6', '#bed8d4', '#627592', '#5fd6dc', '#7d5fdc', '#7dcfef', '#2e81c4', '#979eda', '#4b4b4b', '#dc5f9a', '#7dcfef', '#f76767', '#c08185'],
-        tableKeyMap: {companyname: '公司名字', industry: '所属行业', corporateterritory: '企业属地', unifiedsocialcreditcode: '统一社会信用代码', businessscope: '经营范围', mainproducts: '主要产品', legalrepresentative: '法人代表', contactnumber: '联系电话', eiaapprovalnumber: '环评批复（备案）', mainbusinessincome: '上一年度主营收入', inboundtax: '上一年度入库税金', productionaddress: '生产地址'},
+        tableKeyMap: {CompanyName: '公司名字', Industry: '所属行业', CorporateTerritory: '企业属地', UnifiedSocialCreditCode: '统一社会信用代码', BusinessScope: '经营范围', MainProducts: '主要产品', LegalRepresentative: '法人代表', ContactNumber: '联系电话', EIAApprovalNumber: '环评批复（备案）', MainBusinessIncome: '上一年度主营收入', InboundTax: '上一年度入库税金', ProductionAddress: '生产地址'},
         streetLntlatsMap: {唐昌街道: [103.824336, 30.92366], 三道堰街道: [103.915939, 30.862178], 安德街道: [103.80584, 30.870687], 友爱街道: [103.795132, 30.823379], 团结街道: [103.978343, 30.816234], 郫筒街道: [103.887996, 30.807641], 红光街道: [103.945588, 30.784785], 犀浦街道: [103.972796, 30.753811], 川菜园区: [103.812872, 30.865116], 现代工业港: [103.92972, 30.802213], 德源街道: [103.853417, 30.774637], 安靖街道: [104.018228, 30.759085]},
         companyType: '合规企业',
+        currentClusterContext: {},
+        markersData: [],
       },
+    }
+  },
+
+  computed: {
+    markerGroup () {
+      // markerGroup在cluster组件中作为data使用
+      const markers = this.craneStates.markersData.map((marker) => {return {...marker, offset: [-6, -7]}});
+      // markersData,在requestDone里被赋值（请求回来的results）
+      // marker是有companyName, industry, location三个属性
+      // return回来的marker增加了一个属性，offset
+      return _.groupBy(markers, (result) => result[1])
+      // 根据行业将marker分组
     }
   },
 
   watch: {
     'craneStates.communities' (value) {
+      // craneStates.communities,在multiSelect组件中被赋值，赋值选中的行业
       value.forEach((result, index) => {
-        this.craneStates.markerValueMap[result[0]] = index + 1
+        this.craneStates.markerValueMap[result[0]] = {
+          // result[0],multiSelect选中的值
+          clusterContent: (context) => {
+            const node = `<div class="normalCluster" style="border: 2px solid #284159A6; border-radius: 50%;">
+              <div style='width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-color: ${this.craneStates.colorMap[index % 19]};
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 18px;
+                color: white;'
+                >
+                ${context.count}
+              </div>
+            </div>`
+            context.marker.setContent(node);
+          },
+          markerContent: `<div style="background-color: ${this.craneStates.colorMap[index % 19]}; height: 12px; width: 12px; border-radius: 50%;"></div>`,
+        }
         this.craneStates.markerStyles.push({
           url: `/piduzxqy/images/circle${index % 19}.svg`,
           anchor: [6, 6],
@@ -174,6 +209,14 @@ export const map = {
     },
     'craneStates.searchValue' () {
       this.setState('companyShow', false)
+    },
+    // 清空
+    'craneStates.markersData' () {
+      if(this.$refs.clusterRef) {
+        this.$refs.clusterRef.forEach((component) => {
+          component.cluster.setMap(null)
+        })
+      }
     }
   },
 
@@ -202,6 +245,7 @@ export const map = {
       const scaleValue = document.body.style.transform.match(/scale\(([\.\d]+)\)/)[1]
       return `scale(${1/scaleValue})`
     },
+
     markerMouseoverFunc (marker) {
       const content = `<div>${marker.data.name}</div>`
       const location = marker.data.lnglat
