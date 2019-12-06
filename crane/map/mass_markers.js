@@ -15,6 +15,11 @@ module.exports = {
       $transform: 'getMapScale()'
     }
   },
+  events: {
+    'requestDone': {
+      actions: ["setState('markersData', getComponent('map-component').results)"]
+    }
+  },
   children: [
     {
       id: 'mapRef',
@@ -36,33 +41,72 @@ module.exports = {
         'map-resize': {
           params: ['bounds'],
           actions: ["setState('mapBounds', bounds)"]
+        },
+        'map-click': {
+          params: ['bounds'],
+          actions: [
+            "Object.keys(craneStates.currentClusterContext).length !== 0 ? craneStates.currentClusterContext.setContent(craneStates.currentClusterContext.getContent().replace(/selectedCluster/, 'normalCluster')) : ''",
+            "getComponent('mapRef').map.setStatus({zoomEnable: true, dragEnable: true,})"
+          ]
         }
       },
       children: [
         {
-          id: 'markers',
-          component: '@byzanteam/map-ui/mass-marker',
+          id: 'clusterRef',
+          component: '@byzanteam/map-ui/cluster',
+          vfor: {
+            data: 'markerGroup',
+            exports: {item: 'item', index: 'key'}
+          },
           props: {
-            'v-if': "results",
-            $markers: "results.map((result) => {return {name: result[0], type: result[1], lnglat: [result[2][1],result[2][0]] , style: craneStates.markerValueMap[result[1]]}})",
-            $styles: 'craneStates.markerStyles',
-            $options: "{opacity: 1}"
+            $clusterContent: 'craneStates.markerValueMap[key].clusterContent',
+            //
+            $points: 'item',
+            $markerContent: 'craneStates.markerValueMap[key].markerContent',
+            $options: {
+              $zoomOnClick: false,
+            }
           },
           events: {
-            'mass-mouseover': {
+            'marker-mouseover': {
               params: ['marker'],
               actions: ["markerMouseoverFunc(marker)"]
             },
-            'mass-mouseout': {
+            'marker-clicked': {
               params: ['marker'],
-              actions: ["markerMouseoutFunc(marker)"]
+              actions: ["setState('companyShow', true)", "setState('company', marker.target.getExtData())", "setState('companyCloseIconShow', true)"]
+              // actions: ["setState('companyShow', true)", "setState('company', marker.data)", "setState('companyCloseIconShow', true)"]
             },
-            'mass-clicked': {
-              params: ['marker'],
-              actions: ["setState('companyShow', true)", "setState('company', marker.data)", "setState('companyCloseIconShow', true)"]
+            'clusterClick': {
+              params: ['cluster'],
+              actions: ["clusterClickFunc(cluster)"]
             }
-          }
+          },
         },
+        // {
+        //   id: 'markers',
+        //   component: '@byzanteam/map-ui/mass-marker',
+        //   props: {
+        //     'v-if': "results",
+        //     $markers: "results.map((result) => {return {name: result[0], type: result[1], lnglat: [result[2][1],result[2][0]] , style: craneStates.markerValueMap[result[1]]}})",
+        //     $styles: 'craneStates.markerStyles',
+        //     $options: "{opacity: 1}"
+        //   },
+        //   events: {
+        //     'mass-mouseover': {
+        //       params: ['marker'],
+        //       actions: ["markerMouseoverFunc(marker)"]
+        //     },
+        //     'mass-mouseout': {
+        //       params: ['marker'],
+        //       actions: ["markerMouseoutFunc(marker)"]
+        //     },
+        //     'mass-clicked': {
+        //       params: ['marker'],
+        //       actions: ["setState('companyShow', true)", "setState('company', marker.data)", "setState('companyCloseIconShow', true)"]
+        //     }
+        //   }
+        // },
         {
           id: 'infowindowRef',
           component: '@byzanteam/map-ui/info-window',
