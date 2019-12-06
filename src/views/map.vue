@@ -11,8 +11,8 @@
       </template>
     </brick-input>
     <data-loader ref="map-component" v-slot="{ results: results }" @requestDone="()=>[setState('markersData', getComponent('map-component').results)]" :url="`/v1/components/48d69e96-7ba5-40ba-946d-d0c84058f352/data?table=${craneStates.routerMap[routeParams.table]}${craneStates.mapCommunities}&minLng=${craneStates.mapBounds.southwest.lng}&maxLng=${craneStates.mapBounds.northeast.lng}&minLat=${craneStates.mapBounds.southwest.lat}&maxLat=${craneStates.mapBounds.northeast.lat}`" method="get" :data="[['', '', [0, 0]]]" :style="{width: '100%', height: '100%', transform: getMapScale(), position: 'absolute', top: '0px', left: '0px'}">
-      <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds()), $refs.mapRef.setCenter(craneStates.streetLntlatsMap[routeParams.street])]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" @map-click="(bounds)=>[Object.keys(craneStates.currentClusterContext).length !== 0 ? craneStates.currentClusterContext.setContent(craneStates.currentClusterContext.getContent().replace(/selectedCluster/, 'normalCluster')) : '', getComponent('mapRef').map.setStatus({zoomEnable: true, dragEnable: true,})]" :mapOptions="{center: [103.89682,30.793154], zoom: 17, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
-        <cluster ref="clusterRef" v-for="(item, key) in markerGroup" :key="key" @marker-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @marker-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.target.getExtData()), setState('companyCloseIconShow', true)]" @clusterClick="(cluster)=>[clusterClickFunc(cluster)]" :clusterContent="craneStates.markerValueMap[key].clusterContent" :points="item" :markerContent="craneStates.markerValueMap[key].markerContent" :options="{zoomOnClick: false}" />
+        <base-map ref="mapRef" @map-created="(map)=>[setState('mapBounds', map.getBounds()), $refs.mapRef.setCenter(craneStates.streetLntlatsMap[routeParams.street])]" @map-resize="(bounds)=>[setState('mapBounds', bounds)]" @map-click="(bounds)=>[Object.keys(craneStates.currentClusterContext).length !== 0 ? craneStates.currentClusterContext.setContent(craneStates.currentClusterContext.getContent().replace(/selectedCluster/, 'normalCluster')) : '', getComponent('mapRef').map.setStatus({zoomEnable: true, dragEnable: true,})]" :mapOptions="{center: [103.89682,30.793154], zoom: 17, zooms: [11, 20]}" mapStyle="amap://styles/b31f276415bcbad48ed365bfa6651249" :style="{width: '100%', height: '100%', position: 'absolute', top: '0px', left: '0px'}">
+          <cluster ref="clusterRef" v-for="(item, key) in markerGroup" :key="key" @marker-mouseover="(marker)=>[markerMouseoverFunc(marker)]" @marker-clicked="(marker)=>[setState('companyShow', true), setState('company', marker.target.getExtData()), setState('companyCloseIconShow', true)]" @clusterClick="(cluster)=>[clusterClickFunc(cluster)]" :clusterContent="craneStates.markerValueMap[key].clusterContent" :points="item" :markerContent="craneStates.markerValueMap[key].markerContent" :options="{zoomOnClick: false}" />
         <info-window ref="infowindowRef" />
       </base-map>
     </data-loader>
@@ -151,18 +151,18 @@ export const map = {
   computed: {
     markerGroup () {
       // markerGroup在cluster组件中作为data使用
-      const markers = this.craneStates.markersData.map((marker) => {return {...marker, offset: [-6, -7]}});
+      const markers = this.craneStates.markersData.map((marker) => {return {companyName: marker[0], industry: marker[1], location: [marker[2][1], marker[2][0]], offset: [-6, -7]}});
       // markersData,在requestDone里被赋值（请求回来的results）
       // marker是有companyName, industry, location三个属性
       // return回来的marker增加了一个属性，offset
-      return _.groupBy(markers, (result) => result[1])
+      return _.groupBy(markers, (result) => result.industry)
       // 根据行业将marker分组
     }
   },
 
   watch: {
+    // craneStates.communities,在multiSelect组件中被赋值，赋值选中的行业
     'craneStates.communities' (value) {
-      // craneStates.communities,在multiSelect组件中被赋值，赋值选中的行业
       value.forEach((result, index) => {
         this.craneStates.markerValueMap[result[0]] = {
           // result[0],multiSelect选中的值
@@ -245,14 +245,50 @@ export const map = {
       const scaleValue = document.body.style.transform.match(/scale\(([\.\d]+)\)/)[1]
       return `scale(${1/scaleValue})`
     },
-
     markerMouseoverFunc (marker) {
-      const content = `<div>${marker.data.name}</div>`
-      const location = marker.data.lnglat
-      this.$refs.infowindowRef.createInfoWindow(content, location)
+      const data = marker.target.getExtData()
+      const content = `<div class='info-container'>${data['companyName']}</div>`
+      const location = data.location
+      this.$refs.infowindowRef.createInfoWindow({content: content, location: location})
+      this.$refs.mapRef.map.setStatus({zoomEnable: false, dragEnable: false,})
     },
-    markerMouseoutFunc () {
-      this.$refs.infowindowRef.close()
+    generateClusterInfoWindow(cluster) {
+      const list = document.createElement('div');
+      list.classList.add('info-list');
+      cluster.markers.forEach((marker) => {
+        const item = document.createElement('div');
+        item.classList.add('info-list-item');
+        item.innerHTML = marker.getExtData()['companyName'];
+        item.setAttribute('title', marker.getExtData()['companyName'])
+        item.addEventListener('click', () => {
+          this.setState('company', marker.getExtData())
+          this.setState('companyShow', true)
+        })
+        list.appendChild(item)
+      })
+      const container = document.createElement('div');
+      container.classList.add('info-container');
+      container.appendChild(list)
+      return container
+    },
+    clusterClickFunc (cluster) {
+      console.log(cluster)
+      this.getComponent('infowindowRef').createInfoWindow({
+        content: this.generateClusterInfoWindow(cluster),
+        location: cluster.lnglat,
+        offset: [9, -39]}
+      );
+      this.getComponent('mapRef').map.setStatus(
+        {
+          zoomEnable: false,
+          dragEnable: false,
+        }
+      )
+      cluster.cluster.marker.setContent(cluster.cluster.marker.getContent().replace(/normalCluster/, 'selectedCluster'))
+      if(!_.isEmpty(this.craneStates.currentClusterContext)) {
+        this.craneStates.currentClusterContext.setContent(this.craneStates.currentClusterContext.getContent().replace(/selectedCluster/, 'normalCluster'))
+      }
+      this.setState('currentClusterContext', cluster.cluster.marker)
     }
   }
 }
