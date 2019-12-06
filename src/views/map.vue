@@ -151,7 +151,7 @@ export const map = {
   computed: {
     markerGroup () {
       // markerGroup在cluster组件中作为data使用
-      const markers = this.craneStates.markersData.map((marker) => {return {companyName: marker[0], industry: marker[1], location: [marker[2][1], marker[2][0]], offset: [-6, -7]}});
+      const markers = this.craneStates.markersData.map((marker) => {return {name: marker[0], industry: marker[1], location: [marker[2][1], marker[2][0]], offset: [-6, -7]}});
       // markersData,在requestDone里被赋值（请求回来的results）
       // marker是有companyName, industry, location三个属性
       // return回来的marker增加了一个属性，offset
@@ -247,7 +247,7 @@ export const map = {
     },
     markerMouseoverFunc (marker) {
       const data = marker.target.getExtData()
-      const content = `<div class='info-container'>${data['companyName']}</div>`
+      const content = `<div class='info-container'>${data['name']}</div>`
       const location = data.location
       this.$refs.infowindowRef.createInfoWindow({content: content, location: location})
       this.$refs.mapRef.map.setStatus({zoomEnable: false, dragEnable: false,})
@@ -258,9 +258,10 @@ export const map = {
       cluster.markers.forEach((marker) => {
         const item = document.createElement('div');
         item.classList.add('info-list-item');
-        item.innerHTML = marker.getExtData()['companyName'];
-        item.setAttribute('title', marker.getExtData()['companyName'])
+        item.innerHTML = marker.getExtData()['name'];
+        item.setAttribute('title', marker.getExtData()['name'])
         item.addEventListener('click', () => {
+          console.log(marker.getExtData())
           this.setState('company', marker.getExtData())
           this.setState('companyShow', true)
         })
@@ -272,7 +273,6 @@ export const map = {
       return container
     },
     clusterClickFunc (cluster) {
-      console.log(cluster)
       this.getComponent('infowindowRef').createInfoWindow({
         content: this.generateClusterInfoWindow(cluster),
         location: cluster.lnglat,
