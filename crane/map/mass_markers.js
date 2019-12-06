@@ -83,33 +83,22 @@ module.exports = {
             }
           },
         },
-        // {
-        //   id: 'markers',
-        //   component: '@byzanteam/map-ui/mass-marker',
-        //   props: {
-        //     'v-if': "results",
-        //     $markers: "results.map((result) => {return {name: result[0], type: result[1], lnglat: [result[2][1],result[2][0]] , style: craneStates.markerValueMap[result[1]]}})",
-        //     $styles: 'craneStates.markerStyles',
-        //     $options: "{opacity: 1}"
-        //   },
-        //   events: {
-        //     'mass-mouseover': {
-        //       params: ['marker'],
-        //       actions: ["markerMouseoverFunc(marker)"]
-        //     },
-        //     'mass-mouseout': {
-        //       params: ['marker'],
-        //       actions: ["markerMouseoutFunc(marker)"]
-        //     },
-        //     'mass-clicked': {
-        //       params: ['marker'],
-        //       actions: ["setState('companyShow', true)", "setState('company', marker.data)", "setState('companyCloseIconShow', true)"]
-        //     }
-        //   }
-        // },
         {
           id: 'infowindowRef',
           component: '@byzanteam/map-ui/info-window',
+          props: {
+            $options: {
+              $closeWhenClickMap: true,
+              $isCustom: true,
+            }
+          },
+          events: {
+            'window-closed': {
+              actions: [
+                "Object.keys(craneStates.currentClusterContext).length !== 0 ? craneStates.currentClusterContext.setContent(craneStates.currentClusterContext.getContent().replace(/selectedCluster/, 'normalCluster')) : ''"
+              ]
+            }
+          }
         }
       ],
     },
