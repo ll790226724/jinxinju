@@ -32,6 +32,27 @@
     white-space: nowrap;
 }
 
+.info-container {
+    background-color: #1f2440;
+    padding: 6px 8px;
+    color: #ffffff;
+    font-size: 14px;
+    border-radius: 4px;
+    box-shadow: 0 .1rem .1rem 0 transparentize(#000000, .86);
+    position: relative;
+
+}
+
+.info-container:after {
+    content: "";
+    position: absolute;
+    border: .4rem solid transparent;
+    border-top-color: #1f2440;
+    bottom: -19px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .select-trigger {
   line-height: 2.05rem !important;
 }
